@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { @apply border-slate-200; }
+  body { @apply bg-[#f8f7f4] text-slate-950 antialiased; }
+}
+
+::selection { background: #b9f461; color: #102014; }
+
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes scroll-horizontal { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes scroll-horizontal-reverse { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+.animate-fade-in-up { animation: fadeInUp .7s ease-out both; }
+.animate-scroll-horizontal { animation: scroll-horizontal var(--scroll-duration, 40s) linear infinite; }
+.animate-scroll-horizontal-reverse { animation: scroll-horizontal-reverse var(--scroll-duration, 40s) linear infinite; }
+.scroller-mask:hover .animate-scroll-horizontal, .scroller-mask:hover .animate-scroll-horizontal-reverse { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .animate-fade-in-up, .animate-scroll-horizontal, .animate-scroll-horizontal-reverse { animation: none; } }
