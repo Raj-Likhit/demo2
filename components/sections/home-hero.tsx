@@ -2,7 +2,7 @@ import { ArrowRight, Command, Github, Sparkles } from "lucide-react";
 import { CrowdCanvas } from "@/components/ui/skiper39";
 
 export function SiteNav() {
-  return <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 lg:px-10"><a href="#" className="flex items-center gap-2.5 font-semibold tracking-tight"><span className="grid size-8 place-items-center rounded-lg bg-[#15251a] text-[#c9ff75]"><Command size={17} /></span>devcatalyst</a><div className="hidden items-center gap-8 text-sm text-slate-600 md:flex"><a href="#workflow">Workflow</a><a href="#about">About us</a><a href="#gallery">Gallery</a><a href="#faq">FAQ</a></div><a href="#start" className="rounded-full bg-[#15251a] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#28402f]">Start building <ArrowRight className="ml-1 inline" size={15} /></a></nav>
+  return <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 lg:px-10"><a href="#" className="flex items-center gap-2.5 font-semibold tracking-tight"><span className="grid size-8 place-items-center rounded-lg bg-[#15251a] text-[#c9ff75]"><Command size={17} /></span>devcatalyst</a><div className="hidden items-center gap-8 text-sm text-slate-600 md:flex"><a href="#workflow">Workflow</a><a href="#about">About us</a><a href="#gallery">Gallery</a><a href="#testimonials">Testimonials</a><a href="#faq">FAQ</a></div><a href="#start" className="rounded-full bg-[#15251a] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#28402f]">Start building <ArrowRight className="ml-1 inline" size={15} /></a></nav>
 }
 
 export default function HomeHero() {

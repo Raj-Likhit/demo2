@@ -16,4 +16,6 @@
 .animate-scroll-horizontal { animation: scroll-horizontal var(--scroll-duration, 40s) linear infinite; }
 .animate-scroll-horizontal-reverse { animation: scroll-horizontal-reverse var(--scroll-duration, 40s) linear infinite; }
 .scroller-mask:hover .animate-scroll-horizontal, .scroller-mask:hover .animate-scroll-horizontal-reverse { animation-play-state: paused; }
+.timeline-content { opacity: 0; filter: blur(8px); transform: translateY(16px); transition: opacity .5s ease, filter .5s ease, transform .5s ease; }
+.timeline-content-visible { opacity: 1; filter: blur(0); transform: translateY(0); }
 @media (prefers-reduced-motion: reduce) { .animate-fade-in-up, .animate-scroll-horizontal, .animate-scroll-horizontal-reverse { animation: none; } }
