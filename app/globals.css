@@ -5,6 +5,7 @@
 @layer base {
   * { @apply border-slate-200; }
   body { @apply bg-[#f8f7f4] text-slate-950 antialiased; }
+  html { scroll-padding-top: 4rem; }
 }
 
 ::selection { background: #b9f461; color: #102014; }
@@ -18,4 +19,6 @@
 .scroller-mask:hover .animate-scroll-horizontal, .scroller-mask:hover .animate-scroll-horizontal-reverse { animation-play-state: paused; }
 .timeline-content { opacity: 0; filter: blur(8px); transform: translateY(16px); transition: opacity .5s ease, filter .5s ease, transform .5s ease; }
 .timeline-content-visible { opacity: 1; filter: blur(0); transform: translateY(0); }
+.hero-crowd-frame { mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 100%); }
+@media (max-height: 740px) and (max-width: 1023px) { .hero-crowd-frame { bottom: -36px; } }
 @media (prefers-reduced-motion: reduce) { .animate-fade-in-up, .animate-scroll-horizontal, .animate-scroll-horizontal-reverse { animation: none; } }
