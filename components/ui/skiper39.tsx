@@ -151,7 +151,7 @@ const CrowdCanvas = ({
       // keeping every student's extended lower body anchored past the bottom edge.
       const depth = gsap.parseEase("power2.in")(Math.random());
       const offsetY = stage.width < 768
-        ? 50 * (1 - depth)
+        ? 24 * (1 - depth)
         : src
           ? 100 - 250 * depth
           : (205 - 188 * depth) * scale;
@@ -575,8 +575,9 @@ const CrowdCanvas = ({
       // Responsive student sizing on phones vs desktop
       const baseScale = stage.width < 768
         ? Math.min(
-            (stage.height * 0.944) / PEEP_H,
-            (stage.width * 0.58) / PEEP_W,
+            (stage.height * 0.64) / PEEP_H,
+            (stage.width * 0.46) / PEEP_W,
+            0.95,
           )
         : 1;
       allPeeps.forEach((peep) => {
