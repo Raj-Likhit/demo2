@@ -1,13 +1,13 @@
 "use client";
 
 import { gsap } from "gsap";
-import { Patrick_Hand } from "next/font/google";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
-import { createStudentSprite, PEEP_H, PEEP_W } from "./student-peeps";
-
-// Hand-drawn lettering for the bubbles (swap for any font you like)
-const bubbleFont = Patrick_Hand({ subsets: ["latin"], weight: "400" });
+import {
+  getStudentSpriteSheetDataUrl,
+  PEEP_H,
+  PEEP_W,
+} from "./student-peeps";
 
 const DEFAULT_MESSAGES = [
   "MY FIRST PR!",
@@ -26,19 +26,25 @@ const DEFAULT_MESSAGES = [
   "BEYOND THE SYLLABUS",
 ];
 
-interface CrowdCanvasProps {
-  /** How many different students are generated (the pool the crowd draws from) */
-  crowdSize?: number;
-  /** How many students are on screen at once */
+export interface CrowdCanvasProps {
+  /** Optional custom sprite sheet URL; defaults to generated Open-Peeps college students sheet */
+  src?: string;
+  /** Number of columns across the sprite sheet (matches Code A's `rows` convention) */
+  rows?: number;
+  /** Number of rows down the sprite sheet (matches Code A's `cols` convention) */
+  cols?: number;
+  /** Maximum number of students walking on stage at once */
   maxOnStage?: number;
-  /** Texts shown in the speech bubbles (pass a stable array, e.g. a module constant) */
+  /** Texts shown in the speech bubbles */
   messages?: string[];
-  /** How many bubbles can be visible at once */
+  /** Maximum number of speech bubbles visible at once */
   maxBubbles?: number;
 }
 
 const CrowdCanvas = ({
-  crowdSize = 40,
+  src,
+  rows = 15,
+  cols = 7,
   maxOnStage = 30,
   messages = DEFAULT_MESSAGES,
   maxBubbles = 3,
@@ -54,8 +60,29 @@ const CrowdCanvas = ({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    const device = navigator as Navigator & {
+      deviceMemory?: number;
+      connection?: { saveData?: boolean };
+    };
+    const isLowEnd =
+      isMobile &&
+      (device.deviceMemory !== undefined && device.deviceMemory <= 4 ||
+        navigator.hardwareConcurrency <= 4 ||
+        device.connection?.saveData === true);
+    const spritePixelRatio = src
+      ? 1
+      : isMobile
+        ? isLowEnd ? 1 : 1.25
+        : Math.min(2, Math.max(1.5, window.devicePixelRatio || 1.5));
+
+    const resolvedSrc =
+      src ?? getStudentSpriteSheetDataUrl(rows, cols, spritePixelRatio);
+
     const config = {
-      crowdSize,
+      src: resolvedSrc,
+      rows,
+      cols,
       maxOnStage,
       messages,
       maxBubbles,
@@ -68,20 +95,23 @@ const CrowdCanvas = ({
 
     // TYPES
     type Peep = {
-      image: HTMLCanvasElement;
+      image: HTMLImageElement;
+      rect: number[];
+      naturalW: number;
+      naturalH: number;
       width: number;
       height: number;
+      drawArgs: unknown[];
       x: number;
       y: number;
       anchorY: number;
       scaleX: number;
       baseScale: number;
       walk: gsap.core.Timeline | null;
+      setRect: (rect: number[]) => void;
       setScale: (scale: number) => void;
       render: (ctx: CanvasRenderingContext2D) => void;
     };
-
-    type WalkProps = { startX: number; startY: number; endX: number };
 
     type Bubble = {
       peep: Peep;
@@ -96,12 +126,14 @@ const CrowdCanvas = ({
     const randomRange = (min: number, max: number) =>
       min + Math.random() * (max - min);
     const randomIndex = <T,>(array: T[]) => randomRange(0, array.length) | 0;
-    const removeFromArray = <T,>(array: T[], i: number) => array.splice(i, 1)[0];
+    const removeFromArray = <T,>(array: T[], i: number) =>
+      array.splice(i, 1)[0];
     const removeItemFromArray = <T,>(array: T[], item: T) =>
       removeFromArray(array, array.indexOf(item));
     const removeRandomFromArray = <T,>(array: T[]) =>
       removeFromArray(array, randomIndex(array));
-    const getRandomFromArray = <T,>(array: T[]) => array[randomIndex(array) | 0];
+    const getRandomFromArray = <T,>(array: T[]) =>
+      array[randomIndex(array) | 0];
 
     // TWEEN FACTORIES
     const resetPeep = ({
@@ -110,15 +142,20 @@ const CrowdCanvas = ({
     }: {
       stage: { width: number; height: number };
       peep: Peep;
-    }): WalkProps => {
+    }) => {
       const direction = Math.random() > 0.5 ? 1 : -1;
+      const scale = peep.baseScale * randomRange(0.92, 1.06);
+      peep.setScale(scale);
 
-      // Depth: students further down the screen are a little bigger and sit
-      // lower (more cropped), so the crowd reads as several rows. The offset
-      // never goes negative, so the cut-off bottom edge is never visible.
-      const depth = Math.pow(Math.random(), 0.7); // 0 = back row, 1 = front row
-      peep.setScale(peep.baseScale * (0.9 + 0.22 * depth));
-      const offsetY = (14 + 96 * depth) * peep.baseScale;
+      // Preserves Code A's signature `power2.in` multi-row crowd depth while
+      // keeping every student's extended lower body anchored past the bottom edge.
+      const depth = gsap.parseEase("power2.in")(Math.random());
+      const offsetY = stage.width < 768
+        ? 50 * (1 - depth)
+        : src
+          ? 100 - 250 * depth
+          : (205 - 188 * depth) * scale;
+
       const startY = stage.height - peep.height + offsetY;
       let startX: number;
       let endX: number;
@@ -135,7 +172,6 @@ const CrowdCanvas = ({
 
       peep.x = startX;
       peep.y = startY;
-      // Draw order: whoever's waist line is lower on screen is drawn last (in front)
       peep.anchorY = startY + peep.height;
 
       return {
@@ -145,7 +181,13 @@ const CrowdCanvas = ({
       };
     };
 
-    const normalWalk = ({ peep, props }: { peep: Peep; props: WalkProps }) => {
+    const normalWalk = ({
+      peep,
+      props,
+    }: {
+      peep: Peep;
+      props: { startX: number; startY: number; endX: number };
+    }) => {
       const { startY, endX } = props;
       const xDuration = 10;
       const yDuration = 0.25;
@@ -175,71 +217,117 @@ const CrowdCanvas = ({
       return tl;
     };
 
-    const walks: ((opts: {
-      peep: Peep;
-      props: WalkProps;
-    }) => gsap.core.Timeline)[] = [normalWalk];
+    const walks = [normalWalk];
 
     // FACTORY FUNCTIONS
-    const createPeep = (image: HTMLCanvasElement): Peep => {
+    const createPeep = ({
+      image,
+      rect,
+      logicalW,
+      logicalH,
+    }: {
+      image: HTMLImageElement;
+      rect: number[];
+      logicalW: number;
+      logicalH: number;
+    }): Peep => {
       const peep: Peep = {
         image,
-        width: PEEP_W,
-        height: PEEP_H,
+        rect: [],
+        naturalW: logicalW,
+        naturalH: logicalH,
+        width: logicalW,
+        height: logicalH,
+        drawArgs: [],
         x: 0,
         y: 0,
         anchorY: 0,
         scaleX: 1,
         baseScale: 1,
         walk: null,
-        setScale: (scale: number) => {
-          peep.width = PEEP_W * scale;
-          peep.height = PEEP_H * scale;
-        },
-        render: (ctx: CanvasRenderingContext2D) => {
-          ctx.save();
-          ctx.translate(peep.x, peep.y);
-          ctx.scale(peep.scaleX, 1);
-          ctx.drawImage(
+        setRect: (nextRect: number[]) => {
+          peep.rect = nextRect;
+          peep.drawArgs = [
             peep.image,
+            ...nextRect,
             0,
             0,
-            peep.image.width,
-            peep.image.height,
+            peep.width,
+            peep.height,
+          ];
+        },
+        setScale: (scale: number) => {
+          peep.width = peep.naturalW * scale;
+          peep.height = peep.naturalH * scale;
+        },
+        render: (renderCtx: CanvasRenderingContext2D) => {
+          renderCtx.save();
+          renderCtx.translate(peep.x, peep.y);
+          renderCtx.scale(peep.scaleX, 1);
+          renderCtx.drawImage(
+            peep.image,
+            peep.rect[0],
+            peep.rect[1],
+            peep.rect[2],
+            peep.rect[3],
             0,
             0,
             peep.width,
             peep.height,
           );
-          ctx.restore();
+          renderCtx.restore();
         },
       };
 
+      peep.setRect(rect);
       return peep;
     };
 
     // MAIN
+    const img = document.createElement("img");
     const stage = {
       width: 0,
       height: 0,
+      dpr: 1,
     };
 
     const allPeeps: Peep[] = [];
     const availablePeeps: Peep[] = [];
     const crowd: Peep[] = [];
 
-    // Each student is drawn once onto its own small canvas and reused.
-    // Capped at 2x so memory stays reasonable on high-density phones.
     const createPeeps = () => {
-      const pixelRatio = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
-      for (let i = 0; i < config.crowdSize; i++) {
-        allPeeps.push(createPeep(createStudentSprite(i, pixelRatio)));
+      const { rows: sheetCols, cols: sheetRows } = config;
+      const { naturalWidth: width, naturalHeight: height } = img;
+      const total = sheetCols * sheetRows;
+      const rectWidth = width / sheetCols;
+      const rectHeight = height / sheetRows;
+      const logicalW = src ? rectWidth : PEEP_W;
+      const logicalH = src ? rectHeight : PEEP_H;
+
+      for (let i = 0; i < total; i++) {
+        allPeeps.push(
+          createPeep({
+            image: img,
+            rect: [
+              (i % sheetCols) * rectWidth,
+              ((i / sheetCols) | 0) * rectHeight,
+              rectWidth,
+              rectHeight,
+            ],
+            logicalW,
+            logicalH,
+          }),
+        );
       }
     };
 
     const initCrowd = () => {
       // Cap the number of peeps on stage so the crowd stays sparse
-      while (availablePeeps.length && crowd.length < config.maxOnStage) {
+      const stageLimit = Math.min(
+        config.maxOnStage,
+        stage.width < 768 ? (isLowEnd ? 2 : 4) : config.maxOnStage,
+      );
+      while (availablePeeps.length && crowd.length < stageLimit) {
         const peep = addPeepToCrowd();
         peep.walk?.progress(Math.random());
       }
@@ -271,10 +359,9 @@ const CrowdCanvas = ({
       availablePeeps.push(peep);
     };
 
-    // SPEECH BUBBLES
+    // SPEECH BUBBLES (from Code B)
     // Fraction of the sprite height (from its top) where the bubble tail points.
-    // Raise it if bubbles float too high above heads, lower it if they overlap hair.
-    const BUBBLE_HEAD_OFFSET = 0.04;
+    const BUBBLE_HEAD_OFFSET = src ? 0.1 : 0.06;
 
     const BUBBLE_CSS =
       "position:relative;white-space:nowrap;padding:0.3em 0.8em 0.2em;" +
@@ -300,11 +387,20 @@ const CrowdCanvas = ({
     };
 
     // Horizontal center of a peep (accounts for the flipped sprite)
-    const peepCenterX = (peep: Peep) => peep.x + (peep.scaleX * peep.width) / 2;
+    const peepCenterX = (peep: Peep) =>
+      peep.x + (peep.scaleX * peep.width) / 2;
 
     const placeBubble = (b: Bubble) => {
-      const x = Math.round(peepCenterX(b.peep));
-      const y = Math.round(b.peep.y + b.peep.height * BUBBLE_HEAD_OFFSET);
+      const halfWidth = b.root.offsetWidth / 2;
+      const x = Math.round(
+        Math.max(halfWidth + 4, Math.min(stage.width - halfWidth - 4, peepCenterX(b.peep))),
+      );
+      const y = Math.round(
+        Math.max(
+          b.root.offsetHeight + 4,
+          b.peep.y + b.peep.height * BUBBLE_HEAD_OFFSET,
+        ),
+      );
       b.root.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -100%)`;
     };
 
@@ -339,7 +435,8 @@ const CrowdCanvas = ({
       const rot = randomRange(-4, 4);
 
       const root = document.createElement("div");
-      root.style.cssText = "position:absolute;left:0;top:0;will-change:transform;";
+      root.style.cssText =
+        "position:absolute;left:0;top:0;will-change:transform;";
 
       const pop = document.createElement("div");
       pop.style.cssText = "padding-bottom:12px;transform-origin:50% 100%;";
@@ -368,7 +465,6 @@ const CrowdCanvas = ({
       const tl = gsap.timeline({ onComplete: () => removeBubble(b) });
 
       if (reduceMotion) {
-        // Fade only, no scale or wobble
         tl.fromTo(pop, { opacity: 0 }, { opacity: 1, duration: 0.2 }).to(
           pop,
           { opacity: 0, duration: 0.2 },
@@ -402,15 +498,16 @@ const CrowdCanvas = ({
       b.tl = tl;
     };
 
-    // Every ~1.2-2.4s, pick a walking peep that is well inside the screen
-    // and not close to another bubble, and let it speak.
+    // Every ~1.2-2.4s, pick a walking student well inside the screen
+    // and not close to another active bubble, and let them speak.
     const speak = () => {
       if (disposed) return;
 
-      const limit =
-        stage.width < 768 ? Math.min(config.maxBubbles, 2) : config.maxBubbles;
+      const limit = stage.width < 768
+        ? Math.min(config.maxBubbles, 1)
+        : config.maxBubbles;
 
-      if (bubbles.length < limit) {
+      if (bubbles.length < limit && config.messages.length > 0) {
         const margin = Math.min(120, stage.width * 0.2);
         const gap = Math.min(200, stage.width * 0.35);
 
@@ -434,7 +531,7 @@ const CrowdCanvas = ({
       speakTimer = gsap.delayedCall(randomRange(1.2, 2.4), speak);
     };
 
-    // Runs every frame: keep each bubble attached to its speaker
+    // Runs every frame: keep each bubble attached to its walking speaker
     const updateBubbles = () => {
       for (let i = bubbles.length - 1; i >= 0; i--) {
         const b = bubbles[i];
@@ -455,7 +552,7 @@ const CrowdCanvas = ({
       if (!canvas || !ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.save();
-      ctx.scale(devicePixelRatio, devicePixelRatio);
+      ctx.scale(stage.dpr, stage.dpr);
 
       crowd.forEach((peep) => {
         peep.render(ctx);
@@ -469,13 +566,19 @@ const CrowdCanvas = ({
       if (!canvas) return;
       clearBubbles();
 
+      stage.dpr = Math.min(isLowEnd ? 1 : 2, window.devicePixelRatio || 1);
       stage.width = canvas.clientWidth;
       stage.height = canvas.clientHeight;
-      canvas.width = stage.width * devicePixelRatio;
-      canvas.height = stage.height * devicePixelRatio;
+      canvas.width = stage.width * stage.dpr;
+      canvas.height = stage.height * stage.dpr;
 
-      // Smaller students on phones
-      const baseScale = stage.width < 768 ? 0.65 : 1;
+      // Responsive student sizing on phones vs desktop
+      const baseScale = stage.width < 768
+        ? Math.min(
+            (stage.height * 0.944) / PEEP_H,
+            (stage.width * 0.58) / PEEP_W,
+          )
+        : 1;
       allPeeps.forEach((peep) => {
         peep.baseScale = baseScale;
         peep.setScale(baseScale);
@@ -492,16 +595,25 @@ const CrowdCanvas = ({
       initCrowd();
     };
 
-    createPeeps();
-    resize();
-    gsap.ticker.add(render);
-    speakTimer = gsap.delayedCall(1.2, speak);
+    const init = () => {
+      if (disposed) return;
+      createPeeps();
+      resize();
+      gsap.ticker.add(render);
+      speakTimer = gsap.delayedCall(0.7, speak);
+    };
 
-    const handleResize = () => resize();
+    img.onload = init;
+    img.src = config.src;
+
+    const handleResize = () => {
+      if (allPeeps.length > 0) resize();
+    };
     window.addEventListener("resize", handleResize);
 
     return () => {
       disposed = true;
+      img.onload = null;
       speakTimer?.kill();
       clearBubbles();
       window.removeEventListener("resize", handleResize);
@@ -510,12 +622,10 @@ const CrowdCanvas = ({
         if (peep.walk) peep.walk.kill();
       });
     };
-  }, [crowdSize, maxOnStage, messages, maxBubbles]);
+  }, [src, rows, cols, maxOnStage, messages, maxBubbles]);
 
   return (
-    <div
-      className={`absolute bottom-0 h-[90vh] w-full ${bubbleFont.className}`}
-    >
+    <div className="absolute inset-0 w-full">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
       <div
         ref={layerRef}
@@ -529,13 +639,13 @@ const CrowdCanvas = ({
 const Skiper39 = () => {
   return (
     <div className="relative h-full w-full bg-white text-black">
-      <div className="top-22 absolute left-1/2 grid -translate-x-1/2 content-start justify-items-center gap-6 text-center text-black">
+      <div className="top-22 absolute left-1/2 z-10 grid -translate-x-1/2 content-start justify-items-center gap-6 text-center text-black">
         <span className="relative max-w-[12ch] text-xs uppercase leading-tight opacity-40 after:absolute after:left-1/2 after:top-full after:h-16 after:w-px after:bg-gradient-to-b after:from-white after:to-black after:content-['']">
-          Croud Canvas
+          Crowd Canvas
         </span>
       </div>
       <div className="absolute bottom-0 h-full w-screen">
-        <CrowdCanvas crowdSize={40} maxOnStage={30} maxBubbles={3} />
+        <CrowdCanvas rows={15} cols={7} maxOnStage={30} maxBubbles={3} />
       </div>
     </div>
   );
@@ -543,25 +653,3 @@ const Skiper39 = () => {
 
 export { CrowdCanvas, Skiper39 };
 export default Skiper39;
-
-/**
- * Skiper 39 Canvas_Landing_004 — React + Canvas
- * Inspired by and adapted from https://codepen.io/zadvorsky/pen/xxwbBQV
- * illustration by https://www.openpeeps.com/
- * We respect the original creators. This is an inspired rebuild with our own taste and does not claim any ownership.
- * These animations aren’t associated with the codepen.io . They’re independent recreations meant to study interaction design
- *
- * License & Usage:
- * - Free to use and modify in both personal and commercial projects.
- * - Attribution to Skiper UI is required when using the free version.
- * - No attribution required with Skiper UI Pro.
- *
- * Feedback and contributions are welcome.
- *
- * Author: @gurvinder-singh02
- * Website: https://gxuri.me
- * Twitter: https://x.com/Gur__vi
- *
- * The student sprites in ./student-peeps.ts are drawn procedurally in the same
- * ink-outline style; they do not use the Open Peeps image sheet.
- */

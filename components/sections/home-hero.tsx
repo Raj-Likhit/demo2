@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  ArrowRight,
-  Box,
-  Globe,
-  Github,
-  Lightbulb,
-  Users,
-} from "lucide-react";
+import { ArrowRight, Box, Github, Globe, Lightbulb, Users } from "lucide-react";
 import { gsap } from "gsap";
 import { useLayoutEffect, useRef } from "react";
 
@@ -33,7 +26,6 @@ export default function HomeHero() {
         .fromTo("[data-hero-kicker]", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45 })
         .fromTo("[data-hero-title]", { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: 0.75 }, "-=0.12")
         .fromTo("[data-hero-copy]", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45 }, "-=0.3")
-        .fromTo("[data-hero-mobile-activities]", { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, "-=0.22")
         .fromTo("[data-hero-actions]", { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, "-=0.18")
         .fromTo("[data-hero-aside]", { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45 }, "-=0.28")
         .fromTo("[data-hero-crowd]", { y: 24, scale: 1.025, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 1.3, ease: "power2.out" }, "-=0.75");
@@ -50,7 +42,7 @@ export default function HomeHero() {
         ref={heroRef}
         id="home"
         aria-labelledby="hero-title"
-        className="relative isolate overflow-hidden bg-white text-black lg:min-h-screen lg:min-h-[100svh]"
+        className="relative isolate min-h-[100svh] overflow-hidden bg-white text-black lg:min-h-screen lg:min-h-[100svh]"
       >
         <div className="pointer-events-none absolute left-7 top-9 z-20 hidden h-32 border-l border-black/70 pl-4 md:block lg:left-10">
           <p className="max-w-[90px] text-[10px] font-medium uppercase leading-[1.55] tracking-[0.17em] text-neutral-800">
@@ -68,17 +60,8 @@ export default function HomeHero() {
           <span aria-hidden="true" className="absolute -bottom-2 right-0 h-px w-12 rotate-[-12deg] bg-black" />
         </div>
 
-        {/* The supplied illustration anchors the hero beneath the copy. */}
-        <div
-          aria-hidden="true"
-          className="hero-crowd-frame pointer-events-none absolute inset-x-0 bottom-0 z-0 hidden h-[48svh] max-h-[520px] overflow-hidden lg:block"
-          data-hero-crowd
-        >
-          <CrowdCanvas crowdSize={40} maxOnStage={30} maxBubbles={3} />
-        </div>
-
         {/* Editorial hero layout */}
-        <div className="relative z-10 mx-auto grid w-full max-w-[1360px] grid-cols-1 items-start gap-10 px-6 pt-32 sm:px-10 sm:pt-36 lg:min-h-[100svh] lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-12 lg:px-12 lg:pb-[300px] lg:pt-[155px] xl:px-20">
+        <div className="relative z-10 mx-auto grid w-full max-w-[1360px] grid-cols-1 items-start gap-10 px-6 pt-24 sm:px-10 sm:pt-28 lg:min-h-[100svh] lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-12 lg:px-12 lg:pb-[300px] lg:pt-[155px] xl:px-20">
           {/* Main headline and calls to action */}
           <div className="relative min-w-0">
             <div data-hero-kicker className="mb-7 inline-flex items-center gap-3">
@@ -111,22 +94,6 @@ export default function HomeHero() {
               opportunities together.
             </p>
 
-            <div
-              aria-label="DevCatalyst activities"
-              data-hero-mobile-activities
-              className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2 border-y border-black/20 py-3.5 lg:hidden"
-            >
-              {activities.map(({ label, Icon }) => (
-                <div key={label} className="relative flex min-h-9 items-center gap-2 border-l border-black/65 pl-3.5">
-                  <span aria-hidden="true" className="absolute -left-[3px] top-1/2 size-1.5 -translate-y-1/2 rounded-full bg-black" />
-                  <Icon aria-hidden="true" size={18} strokeWidth={1.7} className="shrink-0 text-black" />
-                  <span className="whitespace-nowrap text-[9px] font-medium tracking-[0.11em] text-neutral-800 sm:text-[10px]">
-                    {label}
-                  </span>
-                </div>
-              ))}
-            </div>
-
             <div data-hero-actions className="mt-7 flex flex-wrap items-center gap-3">
               <a
                 id="start"
@@ -139,59 +106,42 @@ export default function HomeHero() {
                   className="transition-transform duration-200 group-hover:translate-x-1"
                 />
               </a>
-
               <a
                 href="#gallery"
-                className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full border border-black/80 bg-white/90 px-6 py-3 text-sm font-medium text-black transition duration-200 hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-4"
+                className="group hidden min-h-12 items-center justify-center gap-3 rounded-full border border-black/80 bg-white/90 px-6 py-3 text-sm font-medium text-black transition duration-200 hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-4 lg:inline-flex"
               >
                 <Github size={18} strokeWidth={1.8} />
                 Explore Projects
               </a>
             </div>
 
-            <div
-              aria-hidden="true"
-              className="relative mt-6 -mx-6 sm:-mx-10 lg:hidden h-[280px] overflow-hidden"
-              data-hero-crowd
-            >
-              <CrowdCanvas crowdSize={20} maxOnStage={12} maxBubbles={1} />
-            </div>
           </div>
 
-          {/* Supporting editorial details — desktop */}
           <aside
             aria-label="DevCatalyst activities"
             data-hero-aside
             className="hidden min-w-0 flex-col items-end pt-2 lg:flex"
           >
             <div className="mt-6 flex w-full items-center justify-end gap-3">
-              {/* Club activities list */}
               <div className="relative w-[190px] shrink-0 border-l border-black/75 pl-6">
                 {activities.map(({ label, Icon }) => (
-                  <div
-                    key={label}
-                    className="relative flex min-h-[45px] items-center gap-3"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="absolute -left-[29px] top-1/2 size-1.5 -translate-y-1/2 rounded-full bg-black"
-                    />
-
-                    <Icon
-                      aria-hidden="true"
-                      size={21}
-                      strokeWidth={1.6}
-                      className="shrink-0 text-black"
-                    />
-
-                    <span className="whitespace-nowrap text-[10px] font-medium tracking-[0.14em] text-neutral-800">
-                      {label}
-                    </span>
+                  <div key={label} className="relative flex min-h-[45px] items-center gap-3">
+                    <span aria-hidden="true" className="absolute -left-[29px] top-1/2 size-1.5 -translate-y-1/2 rounded-full bg-black" />
+                    <Icon aria-hidden="true" size={21} strokeWidth={1.6} className="shrink-0 text-black" />
+                    <span className="whitespace-nowrap text-[10px] font-medium tracking-[0.14em] text-neutral-800">{label}</span>
                   </div>
                 ))}
               </div>
             </div>
           </aside>
+        </div>
+
+        <div
+          aria-hidden="true"
+          className="hero-crowd-frame pointer-events-none absolute inset-x-0 bottom-0 z-0 h-[90svh] overflow-hidden lg:h-[48svh] lg:max-h-[520px]"
+          data-hero-crowd
+        >
+          <CrowdCanvas rows={8} cols={5} maxOnStage={24} maxBubbles={1} />
         </div>
 
       </section>
