@@ -608,7 +608,22 @@ const CrowdCanvas = ({
     img.src = config.src;
 
     const handleResize = () => {
-      if (allPeeps.length > 0) resize();
+      if (allPeeps.length === 0) return;
+
+      // Mobile browsers may emit resize events as their browser chrome expands
+      // or collapses during scroll. Rebuilding the crowd on those height-only
+      // changes replaces every walking student, which is especially noticeable
+      // on low-end phones. Keep the current stage and cast until its width
+      // actually changes (for example, on device rotation).
+      if (
+        isLowEnd &&
+        isMobile &&
+        Math.abs(canvas.clientWidth - stage.width) < 2
+      ) {
+        return;
+      }
+
+      resize();
     };
     window.addEventListener("resize", handleResize);
 
