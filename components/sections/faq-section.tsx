@@ -104,18 +104,18 @@ export default function FAQSection() {
     >
       <div className="mx-auto grid w-full max-w-[1800px] grid-cols-1 lg:grid-cols-[minmax(0,0.625fr)_minmax(0,1fr)]">
         {/* Illustration panel */}
-        <div className="relative h-[min(64vw,320px)] min-h-[210px] overflow-hidden bg-white sm:h-[min(72vw,560px)] sm:min-h-0 lg:h-[min(52vw,760px)] lg:min-h-[640px]">
+        <div className="relative h-[min(150vw,560px)] min-h-[420px] overflow-hidden bg-white sm:h-[min(72vw,560px)] sm:min-h-0 lg:h-[min(52vw,760px)] lg:min-h-[640px]">
           <Image
             src="/faq-students.webp"
             alt="Hand-drawn illustration of college students gathered around a Frequently Asked Questions sign"
             fill
             sizes="(max-width: 1023px) 100vw, 52vw"
-            className="object-cover object-[center_68%] sm:object-contain sm:object-left-bottom"
+            className="object-contain object-center sm:object-left-bottom"
           />
         </div>
 
         {/* Interactive question explorer */}
-        <div className="flex min-h-[min(64vw,320px)] min-w-0 items-start px-5 py-6 sm:min-h-[min(72vw,560px)] sm:px-8 sm:py-10 lg:min-h-[640px] lg:items-center lg:justify-center lg:px-8 lg:py-12 xl:px-12">
+        <div className="flex min-h-[min(150vw,560px)] min-w-0 items-start px-5 py-6 sm:min-h-[min(72vw,560px)] sm:px-8 sm:py-10 lg:min-h-[640px] lg:items-center lg:justify-center lg:px-8 lg:py-12 xl:px-12">
           <FaqAccordion data={FAQ_DATA} />
         </div>
       </div>

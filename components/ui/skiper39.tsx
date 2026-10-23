@@ -217,8 +217,6 @@ const CrowdCanvas = ({
       return tl;
     };
 
-    const walks = [normalWalk];
-
     // FACTORY FUNCTIONS
     const createPeep = ({
       image,
@@ -335,18 +333,8 @@ const CrowdCanvas = ({
 
     const addPeepToCrowd = () => {
       const peep = removeRandomFromArray(availablePeeps);
-      const walk = getRandomFromArray(walks)({
-        peep,
-        props: resetPeep({
-          peep,
-          stage,
-        }),
-      }).eventCallback("onComplete", () => {
-        removePeepFromCrowd(peep);
-        addPeepToCrowd();
-      });
-
-      peep.walk = walk;
+      const props = resetPeep({ peep, stage });
+      createWalk(peep, props);
 
       crowd.push(peep);
       crowd.sort((a, b) => a.anchorY - b.anchorY);
@@ -357,6 +345,19 @@ const CrowdCanvas = ({
     const removePeepFromCrowd = (peep: Peep) => {
       removeItemFromArray(crowd, peep);
       availablePeeps.push(peep);
+    };
+
+    const createWalk = (
+      peep: Peep,
+      props: { startX: number; startY: number; endX: number },
+    ) => {
+      const walk = normalWalk({ peep, props }).eventCallback("onComplete", () => {
+        if (disposed) return;
+        removePeepFromCrowd(peep);
+        if (availablePeeps.length) addPeepToCrowd();
+      });
+      peep.walk = walk;
+      return walk;
     };
 
     // SPEECH BUBBLES (from Code B)
@@ -562,9 +563,19 @@ const CrowdCanvas = ({
       updateBubbles();
     };
 
-    const resize = () => {
+    const resize = (preserveCrowd = false) => {
       if (!canvas) return;
       clearBubbles();
+
+      const previousHeight = stage.height;
+      const activePeeps = preserveCrowd
+        ? crowd.map((peep) => ({
+            peep,
+            progress: peep.walk?.progress() ?? 0,
+            bottomOffset: previousHeight - peep.y - peep.height,
+            direction: peep.scaleX,
+          }))
+        : [];
 
       stage.dpr = Math.min(isLowEnd ? 1 : 2, window.devicePixelRatio || 1);
       stage.width = canvas.clientWidth;
@@ -575,7 +586,6 @@ const CrowdCanvas = ({
       // Responsive student sizing on phones vs desktop
       const baseScale = stage.width < 768
         ? Math.min(
-            (stage.height * 0.64) / PEEP_H,
             (stage.width * 0.46) / PEEP_W,
             0.95,
           )
@@ -584,6 +594,27 @@ const CrowdCanvas = ({
         peep.baseScale = baseScale;
         peep.setScale(baseScale);
       });
+
+      if (preserveCrowd) {
+        activePeeps.forEach(({ peep, progress, bottomOffset, direction }) => {
+          peep.walk?.kill();
+
+          const startX = direction > 0 ? -peep.width : stage.width + peep.width;
+          const endX = direction > 0 ? stage.width : 0;
+          peep.x = startX + (endX - startX) * progress;
+          peep.y = stage.height - peep.height - bottomOffset;
+          peep.anchorY = peep.y + peep.height;
+
+          createWalk(peep, {
+            startX: peep.x,
+            startY: peep.y,
+            endX,
+          });
+        });
+
+        crowd.sort((a, b) => a.anchorY - b.anchorY);
+        return;
+      }
 
       crowd.forEach((peep) => {
         peep.walk?.kill();
@@ -620,6 +651,7 @@ const CrowdCanvas = ({
         isMobile &&
         Math.abs(canvas.clientWidth - stage.width) < 2
       ) {
+        resize(true);
         return;
       }
 
