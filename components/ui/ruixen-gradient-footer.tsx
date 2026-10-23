@@ -20,7 +20,7 @@ export interface RuixenGradientFooterProps {
   children?: ReactNode; gradientHeight?: string; minReveal?: number; bars?: number; blur?: number; peak?: number; valley?: number; stops?: Stop[]; className?: string; style?: CSSProperties
 }
 
-export function RuixenGradientFooter({ children, gradientHeight = "65vh", minReveal = .045, bars = 9, blur = 15, peak = .98, valley = .55, stops = DEFAULT_STOPS, className, style }: RuixenGradientFooterProps) {
+export function RuixenGradientFooter({ children, gradientHeight = "65vh", minReveal = 0, bars = 9, blur = 15, peak = .98, valley = .55, stops = DEFAULT_STOPS, className, style }: RuixenGradientFooterProps) {
   const uid = useId().replace(/:/g, "")
   const bandRef = useRef<HTMLDivElement>(null)
   const [progress, setProgress] = useState(minReveal)

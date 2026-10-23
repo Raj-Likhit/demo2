@@ -1,25 +1,77 @@
 "use client";
 
-import { TimelineContent } from "@/components/ui/timeline-animation";
-import { useRef } from "react";
+type Testimonial = {
+  quote: string;
+  name: string;
+  role: string;
+  category: string;
+  initial: string;
+};
 
-const testimonials = [
-  ["Hypersphere has been a game-changer for us. Their service is top-notch and their team is incredibly responsive.", "Guillermo Rauch", "CEO of Enigma", "#c9ff75"],
-  ["We've seen incredible results with Hypersphere. Their expertise and dedication have transformed our workflow.", "Rika Shinoda", "CEO of Kintsugi", "#2563eb"],
-  ["Their team is highly professional, and their innovative solutions have truly transformed the way we operate.", "Reacher", "CEO of OdeaoLabs", "#111111"],
-  ["We're extremely satisfied with Hypersphere. Their expertise and dedication have exceeded our expectations.", "John", "CEO of Labsbo", "#111111"],
-  ["Their customer support is absolutely exceptional. They are always available and incredibly helpful.", "Steven Sunny", "CEO of boxefi", "#111111"],
-  ["Hypersphere has been a key partner in our growth journey.", "Guillermo Rauch", "CEO of OdeaoLabs", "#2563eb"],
-  ["Hypersphere has been a true game-changer for us. Their exceptional service and commitment to excellence made a significant impact.", "Paul Brauch", "CTO of Spectrum", "#c9ff75"],
-] as const;
-
-function TestimonialCard({ item, index }: { item: (typeof testimonials)[number]; index: number }) {
-  const [quote, name, role, color] = item;
-  const dark = color === "#111111";
-  return <TimelineContent animationNum={index} className="relative flex min-h-48 flex-col justify-between overflow-hidden rounded-2xl border border-black/10 p-6" style={{ backgroundColor: color, color: dark || color === "#2563eb" ? "white" : "#15251a" }}><div className="pointer-events-none absolute inset-0 opacity-25" style={{ backgroundImage: "linear-gradient(to right,#fff3 1px,transparent 1px),linear-gradient(to bottom,#fff3 1px,transparent 1px)", backgroundSize: "42px 42px" }} /><article className="relative mt-auto"><p className="text-sm leading-6">“{quote}”</p><div className="flex items-end justify-between gap-4 pt-5"><div><h3 className="font-semibold">{name}</h3><p className="text-sm opacity-70">{role}</p></div><div className="grid size-12 shrink-0 place-items-center rounded-xl bg-white/20 text-lg font-semibold">{name[0]}</div></div></article></TimelineContent>;
-}
+const testimonials: Testimonial[] = [
+  { quote: "DevCatalyst gave me the confidence to ship my first real product. The feedback is honest, practical, and always encouraging.", name: "Aarav Mehta", role: "Core Maintainer", category: "Open Source", initial: "A" },
+  { quote: "You arrive with a half-built idea and leave with a deployed link. There is no gatekeeping, just people who want to help you build.", name: "Riya Sen", role: "Frontend Developer", category: "Build Nights", initial: "R" },
+  { quote: "When my backend crashed before demo night, four people pulled up chairs and helped me fix it. That kind of community is rare.", name: "Kabir Verma", role: "Systems Lead", category: "Hackathons", initial: "K" },
+  { quote: "I learned more from debugging real projects here than from semesters of theory. Every session leaves me with something I can use.", name: "Naina Rao", role: "Hackathon Finalist", category: "Build Nights", initial: "N" },
+  { quote: "People celebrate your smallest pull request like it matters. That made contributing feel approachable from day one.", name: "Devansh Joshi", role: "Open Source Contributor", category: "Open Source", initial: "D" },
+  { quote: "The best part is the energy: curious people, thoughtful projects, and enough room to experiment without pretending to have it all figured out.", name: "Zoya Khan", role: "Creative Technologist", category: "Hackathons", initial: "Z" },
+];
 
 export default function ClientFeedback() {
-  const testimonialRef = useRef<HTMLDivElement>(null);
-  return <main ref={testimonialRef} className="w-full bg-white py-20 text-black"><section className="container mx-auto max-w-6xl px-4"><div className="mx-auto max-w-screen-md space-y-2 text-center"><TimelineContent as="h2" animationNum={0} timelineRef={testimonialRef} className="text-3xl font-medium xl:text-4xl">Trusted by startups and the world&apos;s largest companies</TimelineContent><TimelineContent as="p" animationNum={1} timelineRef={testimonialRef} className="text-gray-500">Let&apos;s hear how ambitious teams feel about their service.</TimelineContent></div><div className="mt-10 grid gap-3 lg:grid-cols-3">{testimonials.map((item, index) => <TestimonialCard key={`${item[1]}-${index}`} item={item} index={index} />)}</div></section></main>;
+  return (
+    <section className="bg-white px-5 py-20 text-black sm:px-8 lg:px-10">
+      <div className="mx-auto max-w-6xl">
+        <header className="max-w-2xl">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500">Community feedback</p>
+          <h2 className="mt-4 text-4xl font-semibold tracking-[-0.045em] sm:text-6xl">
+            Built by curious minds.
+            <span className="block text-neutral-400">Backed by the community.</span>
+          </h2>
+          <p className="mt-5 max-w-lg text-base leading-relaxed text-neutral-600 sm:text-lg">
+            Real people, real projects, and a little more confidence after every session.
+          </p>
+        </header>
+
+        <div className="mt-12 overflow-hidden pb-6">
+          <div className="testimonial-marquee flex w-max">
+            {[0, 1].map((copy) => (
+              <div key={copy} className="flex gap-5 pr-5" aria-hidden={copy === 1}>
+                {testimonials.map((item, index) => (
+                  <article
+                    key={`${copy}-${item.name}`}
+                    className="flex min-h-[250px] w-[min(82vw,360px)] flex-col justify-between rounded-2xl border border-black bg-white p-6"
+                    style={{
+                      backgroundImage: "linear-gradient(rgba(0,0,0,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.045) 1px, transparent 1px)",
+                      backgroundSize: "24px 24px",
+                    }}
+                  >
+                    <div>
+                      <div className="mb-8 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.14em] text-neutral-500">
+                        <span>{item.category}</span>
+                        <span>{String(index + 1).padStart(2, "0")} / 06</span>
+                      </div>
+                      <p className="text-lg leading-relaxed tracking-[-0.015em]">“{item.quote}”</p>
+                    </div>
+                    <footer className="mt-10 flex items-center justify-between gap-4 border-t border-black/15 pt-4">
+                      <div>
+                        <p className="font-semibold">{item.name}</p>
+                        <p className="mt-1 text-sm text-neutral-500">{item.role}</p>
+                      </div>
+                      <span className="grid size-10 shrink-0 place-items-center rounded-full border border-black bg-black text-sm font-semibold text-white">{item.initial}</span>
+                    </footer>
+                  </article>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+        <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">Community / in motion</p>
+      </div>
+      <style>{`
+        .testimonial-marquee { animation: testimonial-scroll 42s linear infinite; }
+        @keyframes testimonial-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        @media (prefers-reduced-motion: reduce) { .testimonial-marquee { animation-play-state: paused; } }
+      `}</style>
+    </section>
+  );
 }
