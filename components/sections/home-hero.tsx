@@ -42,10 +42,10 @@ export default function HomeHero() {
         ref={heroRef}
         id="home"
         aria-labelledby="hero-title"
-        className="relative isolate min-h-[100svh] overflow-hidden bg-white text-black lg:min-h-screen lg:min-h-[100svh]"
+        className="relative isolate min-h-[100svh] overflow-hidden bg-catalyst-paper text-catalyst-ink lg:min-h-screen lg:min-h-[100svh]"
       >
-        <div className="pointer-events-none absolute left-7 top-9 z-20 hidden h-32 border-l border-black/70 pl-4 md:block lg:left-10">
-          <p className="max-w-[90px] text-[10px] font-medium uppercase leading-[1.55] tracking-[0.17em] text-neutral-800">
+        <div className="pointer-events-none absolute left-7 top-9 z-20 hidden h-32 border-l border-catalyst-forest/70 pl-4 md:block lg:left-10">
+          <p className="max-w-[90px] text-[10px] font-medium uppercase leading-[1.55] tracking-[0.17em] text-catalyst-muted">
             Student led<br />tech<br />community
           </p>
         </div>
@@ -54,10 +54,10 @@ export default function HomeHero() {
           <svg aria-hidden="true" viewBox="0 0 36 40" className="mt-1 size-8" fill="none">
             <path d="M17 2l2.8 12 10.5-6-8 10.1 11 4.2-12 .8 3.6 11.2-7.8-9.1-7 9.7 2.6-11.8L1 25l10.2-6.2L3 10l11 5.2L17 2Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
           </svg>
-          <p className="text-[12px] font-semibold uppercase leading-[1.45] tracking-[0.08em] text-black">
+          <p className="text-[12px] font-semibold uppercase leading-[1.45] tracking-[0.08em] text-catalyst-ink">
             Ideas<br />People<br />Projects<br />Impact
           </p>
-          <span aria-hidden="true" className="absolute -bottom-2 right-0 h-px w-12 rotate-[-12deg] bg-black" />
+          <span aria-hidden="true" className="absolute -bottom-2 right-0 h-px w-12 rotate-[-12deg] bg-catalyst-forest" />
         </div>
 
         {/* Editorial hero layout */}
@@ -67,9 +67,9 @@ export default function HomeHero() {
             <div data-hero-kicker className="mb-7 inline-flex items-center gap-3">
               <span
                 aria-hidden="true"
-                className="h-6 w-px bg-black"
+                className="h-6 w-px bg-catalyst-forest"
               />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-800 sm:text-xs">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-catalyst-muted sm:text-xs">
                 Curious minds. Real projects.
               </span>
             </div>
@@ -77,18 +77,18 @@ export default function HomeHero() {
             <h1
               id="hero-title"
               data-hero-title
-              className="max-w-full text-[clamp(2.65rem,6.8vw,7rem)] font-semibold leading-[0.9] tracking-[-0.075em] text-black"
+              className="max-w-full text-[clamp(2.65rem,6.8vw,7rem)] font-semibold leading-[0.9] tracking-[-0.075em] text-catalyst-ink"
             >
               <span className="block whitespace-nowrap">
                 Build beyond
               </span>
 
-              <span className="block whitespace-nowrap text-neutral-500">
+              <span className="block whitespace-nowrap text-catalyst-muted">
                 the syllabus.
               </span>
             </h1>
 
-            <p data-hero-copy className="mt-7 max-w-[465px] text-base leading-7 text-neutral-600 sm:text-lg sm:leading-7">
+            <p data-hero-copy className="mt-7 max-w-[465px] text-base leading-7 text-catalyst-muted sm:text-lg sm:leading-7">
               A community for students who love technology.
               Learn, collaborate, build real projects, and create
               opportunities together.
@@ -98,7 +98,7 @@ export default function HomeHero() {
               <a
                 id="start"
                 href="#about"
-                className="group inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-black px-6 py-3 text-sm font-semibold text-white transition duration-200 hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-4"
+                className="group inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-catalyst-forest px-6 py-3 text-sm font-semibold text-white transition duration-200 hover:bg-catalyst-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-catalyst-forest focus-visible:ring-offset-4"
               >
                 Join DevCatalyst
                 <ArrowRight
@@ -108,7 +108,7 @@ export default function HomeHero() {
               </a>
               <a
                 href="#gallery"
-                className="group hidden min-h-12 items-center justify-center gap-3 rounded-full border border-black/80 bg-white/90 px-6 py-3 text-sm font-medium text-black transition duration-200 hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-4 lg:inline-flex"
+                className="group hidden min-h-12 items-center justify-center gap-3 rounded-full border border-catalyst-forest bg-catalyst-white/90 px-6 py-3 text-sm font-medium text-catalyst-ink transition duration-200 hover:bg-catalyst-sage focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-catalyst-forest focus-visible:ring-offset-4 lg:inline-flex"
               >
                 <Github size={18} strokeWidth={1.8} />
                 Explore Projects
@@ -123,12 +123,12 @@ export default function HomeHero() {
             className="hidden min-w-0 flex-col items-end pt-2 lg:flex"
           >
             <div className="mt-6 flex w-full items-center justify-end gap-3">
-              <div className="relative w-[190px] shrink-0 border-l border-black/75 pl-6">
+              <div className="relative w-[190px] shrink-0 border-l border-catalyst-forest/75 pl-6">
                 {activities.map(({ label, Icon }) => (
                   <div key={label} className="relative flex min-h-[45px] items-center gap-3">
-                    <span aria-hidden="true" className="absolute -left-[29px] top-1/2 size-1.5 -translate-y-1/2 rounded-full bg-black" />
-                    <Icon aria-hidden="true" size={21} strokeWidth={1.6} className="shrink-0 text-black" />
-                    <span className="whitespace-nowrap text-[10px] font-medium tracking-[0.14em] text-neutral-800">{label}</span>
+                    <span aria-hidden="true" className="absolute -left-[29px] top-1/2 size-1.5 -translate-y-1/2 rounded-full bg-catalyst-forest" />
+                    <Icon aria-hidden="true" size={21} strokeWidth={1.6} className="shrink-0 text-catalyst-ink" />
+                    <span className="whitespace-nowrap text-[10px] font-medium tracking-[0.14em] text-catalyst-muted">{label}</span>
                   </div>
                 ))}
               </div>
