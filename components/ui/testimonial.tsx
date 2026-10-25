@@ -19,9 +19,9 @@ const testimonials: Testimonial[] = [
 
 export default function ClientFeedback() {
   return (
-    <section className="bg-white px-5 py-20 text-black sm:px-8 lg:px-10">
-      <div className="mx-auto max-w-6xl">
-        <header className="max-w-2xl">
+    <section className="w-full overflow-hidden bg-white py-20 text-black">
+      <div className="w-full">
+        <header className="mx-auto max-w-6xl px-5 sm:px-8 lg:px-10">
           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500">Community feedback</p>
           <h2 className="mt-4 text-4xl font-semibold tracking-[-0.045em] sm:text-6xl">
             Built by curious minds.
@@ -32,14 +32,14 @@ export default function ClientFeedback() {
           </p>
         </header>
 
-        <div className="mt-12 overflow-hidden pb-6">
+        <div className="relative left-1/2 mt-12 w-screen -translate-x-1/2 overflow-hidden pb-6">
           <div className="testimonial-marquee flex w-max">
             {[0, 1].map((copy) => (
               <div key={copy} className="flex gap-5 pr-5" aria-hidden={copy === 1}>
                 {testimonials.map((item, index) => (
                   <article
                     key={`${copy}-${item.name}`}
-                    className="flex min-h-[250px] w-[min(82vw,360px)] flex-col justify-between rounded-2xl border border-black bg-white p-6"
+                    className="flex min-h-[250px] w-[min(82vw,380px)] flex-col justify-between rounded-2xl border border-black bg-white p-6"
                     style={{
                       backgroundImage: "linear-gradient(rgba(0,0,0,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.045) 1px, transparent 1px)",
                       backgroundSize: "24px 24px",
@@ -65,7 +65,7 @@ export default function ClientFeedback() {
             ))}
           </div>
         </div>
-        <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400">Community / in motion</p>
+        <p className="mx-auto mt-1 max-w-6xl px-5 font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400 sm:px-8 lg:px-10">Community / in motion</p>
       </div>
       <style>{`
         .testimonial-marquee { animation: testimonial-scroll 42s linear infinite; }
