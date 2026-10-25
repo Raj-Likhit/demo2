@@ -9,5 +9,5 @@ import SiteFooter from "@/components/sections/site-footer";
 import ContactSection from "@/components/sections/contact-section";
 
 export default function Home() {
-  return <main className="min-h-screen overflow-hidden bg-[#f8f7f4]"><HomeHero /><WorkflowSection /><AboutSection /><MarqueeSection /><GallerySection /><TestimonialsSection /><FAQSection /><ContactSection /><SiteFooter /></main>;
+  return <main className="min-h-screen overflow-hidden bg-catalyst-paper"><HomeHero /><WorkflowSection /><AboutSection /><MarqueeSection /><GallerySection /><TestimonialsSection /><FAQSection /><ContactSection /><SiteFooter /></main>;
 }

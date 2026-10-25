@@ -19,15 +19,15 @@ const testimonials: Testimonial[] = [
 
 export default function ClientFeedback() {
   return (
-    <section className="w-full overflow-hidden bg-white py-20 text-black">
+    <section className="w-full overflow-hidden bg-catalyst-paper py-20 text-catalyst-ink">
       <div className="w-full">
         <header className="mx-auto max-w-6xl px-5 sm:px-8 lg:px-10">
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500">Community feedback</p>
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-catalyst-forest">Community feedback</p>
           <h2 className="mt-4 text-4xl font-semibold tracking-[-0.045em] sm:text-6xl">
             Built by curious minds.
-            <span className="block text-neutral-400">Backed by the community.</span>
+            <span className="block text-catalyst-muted">Backed by the community.</span>
           </h2>
-          <p className="mt-5 max-w-lg text-base leading-relaxed text-neutral-600 sm:text-lg">
+          <p className="mt-5 max-w-lg text-base leading-relaxed text-catalyst-muted sm:text-lg">
             Real people, real projects, and a little more confidence after every session.
           </p>
         </header>
@@ -39,25 +39,25 @@ export default function ClientFeedback() {
                 {testimonials.map((item, index) => (
                   <article
                     key={`${copy}-${item.name}`}
-                    className="flex min-h-[250px] w-[min(82vw,380px)] flex-col justify-between rounded-2xl border border-black bg-white p-6"
+                    className="flex min-h-[250px] w-[min(82vw,380px)] flex-col justify-between rounded-2xl border border-catalyst-line bg-catalyst-white p-6"
                     style={{
-                      backgroundImage: "linear-gradient(rgba(0,0,0,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.045) 1px, transparent 1px)",
+                      backgroundImage: "linear-gradient(rgba(0,0,0,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.055) 1px, transparent 1px)",
                       backgroundSize: "24px 24px",
                     }}
                   >
                     <div>
-                      <div className="mb-8 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.14em] text-neutral-500">
+                      <div className="mb-8 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.14em] text-catalyst-forest">
                         <span>{item.category}</span>
                         <span>{String(index + 1).padStart(2, "0")} / 06</span>
                       </div>
                       <p className="text-lg leading-relaxed tracking-[-0.015em]">“{item.quote}”</p>
                     </div>
-                    <footer className="mt-10 flex items-center justify-between gap-4 border-t border-black/15 pt-4">
+                    <footer className="mt-10 flex items-center justify-between gap-4 border-t border-catalyst-line pt-4">
                       <div>
                         <p className="font-semibold">{item.name}</p>
-                        <p className="mt-1 text-sm text-neutral-500">{item.role}</p>
+                        <p className="mt-1 text-sm text-catalyst-forest">{item.role}</p>
                       </div>
-                      <span className="grid size-10 shrink-0 place-items-center rounded-full border border-black bg-black text-sm font-semibold text-white">{item.initial}</span>
+                      <span className="grid size-10 shrink-0 place-items-center rounded-full border border-catalyst-forest bg-catalyst-forest text-sm font-semibold text-white">{item.initial}</span>
                     </footer>
                   </article>
                 ))}
@@ -65,7 +65,7 @@ export default function ClientFeedback() {
             ))}
           </div>
         </div>
-        <p className="mx-auto mt-1 max-w-6xl px-5 font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-400 sm:px-8 lg:px-10">Community / in motion</p>
+        <p className="mx-auto mt-1 max-w-6xl px-5 font-mono text-[10px] uppercase tracking-[0.16em] text-catalyst-muted sm:px-8 lg:px-10">Community / in motion</p>
       </div>
       <style>{`
         .testimonial-marquee { animation: testimonial-scroll 42s linear infinite; }

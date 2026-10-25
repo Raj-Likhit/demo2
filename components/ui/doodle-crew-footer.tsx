@@ -1,8 +1,16 @@
 "use client";
 
 import * as React from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const links = ["What we do", "Projects", "Events", "Team", "GitHub"];
+const links = [
+  { label: "What we do", href: "#workflow" },
+  { label: "Projects", href: "#gallery" },
+  { label: "Events", href: "#testimonials" },
+  { label: "Team", href: "#about" },
+  { label: "GitHub", href: "https://github.com/", external: true },
+];
 
 function Sparkle({ className = "" }: { className?: string }) {
   return <svg viewBox="0 0 40 40" className={className} aria-hidden="true"><path d="M20 3l3.4 13.6L37 20l-13.6 3.4L20 37l-3.4-13.6L3 20l13.6-3.4z" fill="white" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" /></svg>;
@@ -18,45 +26,137 @@ function Github() {
 
 export default function DoodleCrewFooter() {
   const repeated = ["Ideas", "People", "Projects", "Impact", "DevCatalyst"];
+  const footerRef = React.useRef<HTMLElement>(null);
+  const stageRef = React.useRef<HTMLDivElement>(null);
+  const wordRef = React.useRef<HTMLHeadingElement>(null);
+  const marqueeRef = React.useRef<HTMLDivElement>(null);
+  const trackRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const footer = footerRef.current;
+    const stage = stageRef.current;
+    const word = wordRef.current;
+    const marquee = marqueeRef.current;
+    const track = trackRef.current;
+    if (!footer || !stage || !word || !marquee || !track) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+    const cleanups: Array<() => void> = [];
+    const context = gsap.context(() => {
+      const letters = Array.from(word.querySelectorAll<HTMLElement>(".dc-footer-letter"));
+      const innerLetters = Array.from(word.querySelectorAll<HTMLElement>(".dc-footer-letter-inner"));
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduced) return;
+
+      const paths = footer.querySelectorAll<SVGPathElement>(".dc-footer-scribble path");
+      paths.forEach((path) => {
+        const length = path.getTotalLength();
+        gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+      });
+
+      const entrance = gsap.timeline({
+        scrollTrigger: { trigger: footer, start: "top 75%", once: true },
+      });
+      entrance
+        .from(letters, { yPercent: 130, rotation: () => gsap.utils.random(-12, 12), duration: 1.15, ease: "back.out(1.45)", stagger: 0.055 })
+        .to(paths, { strokeDashoffset: 0, duration: 1.5, ease: "power2.inOut", stagger: 0.12 }, "-=0.55")
+        .from(footer.querySelectorAll(".dc-footer-sparkle"), { scale: 0, rotation: -120, duration: 0.9, ease: "back.out(2.2)", stagger: 0.14 }, "-=1.2")
+        .from(footer.querySelector(".dc-footer-kicker"), { opacity: 0, y: 12, duration: 0.7 }, "-=0.9")
+        .from(footer.querySelectorAll(".dc-footer-reveal"), { opacity: 0, y: 26, duration: 0.8, stagger: 0.12, ease: "power3.out" }, "-=0.6")
+        .from(footer.querySelectorAll(".dc-footer-micro"), { opacity: 0, duration: 1.1 }, "<")
+        .from(footer.querySelector(".dc-footer-bottom"), { opacity: 0, duration: 0.9 }, "-=0.4");
+
+      innerLetters.forEach((letter) => {
+        gsap.to(letter, { y: () => -4 - Math.random() * 4, duration: () => 3 + Math.random() * 2.2, ease: "sine.inOut", repeat: -1, yoyo: true, delay: () => 1.6 + Math.random() * 2.5 });
+      });
+
+      if (window.matchMedia("(pointer: fine)").matches) {
+        const setters = letters.map((letter) => ({
+          x: gsap.quickTo(letter, "x", { duration: 0.5, ease: "power3" }),
+          y: gsap.quickTo(letter, "y", { duration: 0.5, ease: "power3" }),
+          rotation: gsap.quickTo(letter, "rotation", { duration: 0.7, ease: "power3" }),
+        }));
+        const onMove = (event: MouseEvent) => letters.forEach((letter, index) => {
+          const rect = letter.getBoundingClientRect();
+          const dx = event.clientX - (rect.left + rect.width / 2);
+          const dy = event.clientY - (rect.top + rect.height / 2);
+          const distance = Math.hypot(dx, dy);
+          if (distance < 170) {
+            const force = 1 - distance / 170;
+            setters[index].x(dx * 0.32 * force);
+            setters[index].y(dy * 0.32 * force);
+            setters[index].rotation(dx * 0.035 * force);
+          } else {
+            setters[index].x(0); setters[index].y(0); setters[index].rotation(0);
+          }
+        });
+        const reset = () => setters.forEach((setter) => { setter.x(0); setter.y(0); setter.rotation(0); });
+        stage.addEventListener("mousemove", onMove);
+        stage.addEventListener("mouseleave", reset);
+        cleanups.push(() => {
+          stage.removeEventListener("mousemove", onMove);
+          stage.removeEventListener("mouseleave", reset);
+        });
+      }
+
+      const animation = gsap.to(track, { xPercent: -50, ease: "none", duration: 28, repeat: -1 });
+      const slow = () => gsap.to(animation, { timeScale: 0.2, duration: 0.6 });
+      const resume = () => gsap.to(animation, { timeScale: 1, duration: 0.6 });
+      marquee.addEventListener("mouseenter", slow);
+      marquee.addEventListener("mouseleave", resume);
+      marquee.addEventListener("focusin", slow);
+      marquee.addEventListener("focusout", resume);
+      cleanups.push(() => {
+        marquee.removeEventListener("mouseenter", slow);
+        marquee.removeEventListener("mouseleave", resume);
+        marquee.removeEventListener("focusin", slow);
+        marquee.removeEventListener("focusout", resume);
+      });
+    }, footer);
+
+    return () => {
+      cleanups.forEach((cleanup) => cleanup());
+      context.revert();
+    };
+  }, []);
 
   return (
-    <footer id="footer" className="relative w-full overflow-hidden border-t border-[#e6e6e6] bg-white px-0 pt-[clamp(110px,15vh,180px)] text-[#0f0f0f]">
-      <div className="pointer-events-none absolute left-[4vw] top-12 hidden border-l border-black pl-4 font-mono text-[11px] uppercase leading-[2.1] tracking-[0.3em] lg:block">Student led<br />Tech<br />Community</div>
-      <div className="pointer-events-none absolute right-[4vw] top-12 hidden font-mono text-[11px] uppercase leading-[2.1] tracking-[0.3em] lg:block"><Sparkle className="mb-2 block w-4" />Ideas<br />People<br />Projects<br />Impact<span className="mt-2 block h-px w-11 -rotate-2 bg-black" /></div>
+    <footer ref={footerRef} id="footer" className="relative w-full overflow-hidden border-t border-[#e6e6e6] bg-white px-0 pt-[clamp(110px,15vh,180px)] text-[#0f0f0f]">
+      <div className="dc-footer-micro pointer-events-none absolute left-[4vw] top-12 hidden border-l border-black pl-4 font-mono text-[11px] uppercase leading-[2.1] tracking-[0.3em] lg:block">Student led<br />Tech<br />Community</div>
+      <div className="dc-footer-micro pointer-events-none absolute right-[4vw] top-12 hidden font-mono text-[11px] uppercase leading-[2.1] tracking-[0.3em] lg:block"><Sparkle className="mb-2 block w-4" />Ideas<br />People<br />Projects<br />Impact<span className="mt-2 block h-px w-11 -rotate-2 bg-black" /></div>
 
       <div className="relative mx-auto w-full max-w-[1500px] px-5 sm:px-8 lg:px-[4vw]">
-        <div className="relative mx-auto w-full max-w-[1280px]">
-          <Sparkle className="absolute -left-1 top-[-9%] w-[clamp(26px,3vw,44px)] text-black [filter:drop-shadow(3px_3px_0_#0f0f0f)]" />
-          <Sparkle className="absolute -right-1 top-[-16%] w-[clamp(40px,4.6vw,68px)] text-black [filter:drop-shadow(3px_3px_0_#0f0f0f)]" />
-          <p className="mb-[4vh] text-center font-mono text-[12px] uppercase tracking-[0.35em] before:mr-4 before:inline-block before:h-[34px] before:w-px before:translate-y-[-2px] before:bg-black before:align-middle">Curious minds — Real projects</p>
+        <div ref={stageRef} className="relative mx-auto w-full max-w-[1280px]">
+          <Sparkle className="dc-footer-sparkle absolute -left-1 top-[-9%] w-[clamp(26px,3vw,44px)] text-black [filter:drop-shadow(3px_3px_0_#0f0f0f)]" />
+          <Sparkle className="dc-footer-sparkle absolute -right-1 top-[-16%] w-[clamp(40px,4.6vw,68px)] text-black [filter:drop-shadow(3px_3px_0_#0f0f0f)]" />
+          <p className="dc-footer-kicker mb-[4vh] text-center font-mono text-[clamp(9px,3vw,12px)] uppercase tracking-[0.14em] before:mr-2 before:inline-block before:h-6 before:w-px before:translate-y-[-2px] before:bg-black before:align-middle sm:tracking-[0.35em] sm:before:mr-4 sm:before:h-[34px]">Curious minds — Real projects</p>
           <div className="overflow-hidden px-[.1em]">
-            <h2 className="flex select-none justify-center whitespace-nowrap text-[clamp(58px,12.5vw,215px)] font-black leading-none tracking-[-.065em] [filter:url(#dc-footer-rough)]" aria-label="DevCatalyst">
-              {Array.from("DevCatalyst").map((char, index) => <span key={`${char}-${index}`} className="dc-footer-letter inline-block bg-black bg-[radial-gradient(#fff9_0.8px,transparent_1px),linear-gradient(transparent_45%,#fff4_46%,transparent_49%)] bg-[length:18px_18px,100%_100%] bg-clip-text text-transparent">{char}</span>)}
+            <h2 ref={wordRef} className="flex select-none justify-center whitespace-nowrap text-[clamp(38px,12.5vw,215px)] font-black leading-none tracking-[-.045em] [filter:url(#dc-footer-rough)] sm:text-[clamp(58px,12.5vw,215px)]" aria-label="DevCatalyst">
+              {Array.from("DevCatalyst").map((char, index) => <span key={`${char}-${index}`} aria-hidden="true" className="dc-footer-letter inline-block"><span className="dc-footer-letter-inner inline-block bg-black bg-[url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27260%27 height=%2790%27%3E%3Cg stroke=%27%23fff%27 fill=%27none%27 stroke-linecap=%27round%27%3E%3Cpath d=%27M10 12h80M110 10h60M185 13h65M20 28h50M90 26h90M200 29h45M5 46h35M60 44h70M150 47h95M25 64h60M105 62h40M165 65h80M12 80h45M75 78h75M170 81h60%27 stroke-width=%272%27/%3E%3C/g%3E%3Cg fill=%27%23fff%27%3E%3Ccircle cx=%2770%27 cy=%2720%27 r=%271%27/%3E%3Ccircle cx=%27150%27 cy=%2736%27 r=%271%27/%3E%3Ccircle cx=%27215%27 cy=%2755%27 r=%271%27/%3E%3C/g%3E%3C/svg%3E')] bg-[length:.85em_auto] bg-clip-text text-transparent">{char}</span></span>)}
             </h2>
           </div>
           <svg className="dc-footer-scribble pointer-events-none absolute -bottom-[7%] left-[1%] h-[34px] w-[98%]" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true"><path d="M12 34C180 18 360 44 540 30S880 22 988 32" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" /><path d="M20 44C200 32 420 50 620 38S900 32 978 40" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" opacity=".4" /></svg>
         </div>
 
-        <h3 className="mt-[clamp(56px,8vh,90px)] text-center text-[clamp(20px,2.6vw,36px)] font-black tracking-[-.035em]">Build beyond <span className="text-[#8a8a8a]">the syllabus.</span></h3>
-        <div className="mt-[30px] flex flex-wrap justify-center gap-[14px] px-[4vw]">
+        <h3 className="dc-footer-reveal mt-[clamp(56px,8vh,90px)] text-center text-[clamp(20px,2.6vw,36px)] font-black tracking-[-.035em]">Build beyond <span className="text-[#8a8a8a]">the syllabus.</span></h3>
+        <div className="dc-footer-reveal mt-[30px] flex flex-wrap justify-center gap-[14px] px-[4vw]">
           <a href="#contact" className="flex items-center gap-2.5 rounded-full bg-[#0f0f0f] px-[30px] py-[15px] text-base font-medium text-white transition hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_#a3a3a3]">Join DevCatalyst <Arrow /></a>
           <a href="#gallery" className="flex items-center gap-2.5 rounded-full border-[1.5px] border-[#0f0f0f] px-[30px] py-[15px] text-base font-medium transition hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_#0f0f0f]"><Github /> Explore Projects</a>
         </div>
 
-        <div className="dc-footer-marquee mt-[clamp(70px,10vh,110px)] overflow-hidden border-y border-black py-[clamp(10px,1.6vw,20px)]">
-          <div className="dc-footer-track flex w-max">
-            {[0, 1].map((copy) => <div key={copy} className="flex items-center gap-[3.2vw] pr-[3.2vw] text-[clamp(36px,5.6vw,92px)] font-black uppercase leading-none tracking-[-.03em]" aria-hidden={copy === 1}>{repeated.map((item, index) => <React.Fragment key={`${copy}-${item}`}><span className={index % 2 ? "dc-footer-outline" : ""}>{item}</span><Sparkle className="w-[.42em] shrink-0 text-black" /></React.Fragment>)}</div>)}
+        <div ref={marqueeRef} className="dc-footer-marquee mt-[clamp(70px,10vh,110px)] overflow-hidden border-y border-black py-[clamp(10px,1.6vw,20px)]">
+          <div ref={trackRef} className="dc-footer-track flex w-max">
+            {[0, 1].map((copy) => <div key={copy} className="flex items-center gap-[3.2vw] pr-[3.2vw] text-[clamp(36px,5.6vw,92px)] font-black uppercase leading-none tracking-[-.03em]" aria-hidden={copy === 1}>{repeated.map((item, index) => <React.Fragment key={`${copy}-${item}`}><span className={index % 2 ? "[-webkit-text-stroke:1.5px_#0f0f0f] text-transparent" : ""}>{item}</span><Sparkle className="w-[.42em] shrink-0 text-black" /></React.Fragment>)}</div>)}
           </div>
         </div>
       </div>
 
-      <div className="mt-0 flex flex-wrap items-center justify-between gap-[18px] border-t border-[#e6e6e6] px-[4vw] py-6 font-mono text-[11px] uppercase tracking-[0.25em] text-[#555]">
-        <span>© 2025 DevCatalyst</span>
-        <nav className="flex flex-wrap gap-x-[26px] gap-y-2">{links.map((link) => <a key={link} href="#" className="transition-colors hover:text-black hover:underline">{link}</a>)}</nav>
+      <div className="dc-footer-bottom flex flex-wrap items-center justify-between gap-[18px] border-t border-[#e6e6e6] px-[4vw] py-6 font-mono text-[11px] uppercase tracking-[0.25em] text-[#555]">
+        <span>© {new Date().getFullYear()} DevCatalyst</span>
+        <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-[26px] gap-y-2">{links.map((link) => <a key={link.label} href={link.href} {...(link.external ? { target: "_blank", rel: "noreferrer" } : {})} className="transition-colors hover:text-black hover:underline">{link.label}</a>)}</nav>
         <span>Made on campus</span>
       </div>
-      <svg width="0" height="0" className="absolute"><defs><filter id="dc-footer-rough"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="4" result="n" /><feDisplacementMap in="SourceGraphic" in2="n" scale="2.5" /></filter></defs></svg>
-      <style>{`@keyframes dcFooterMarquee{to{transform:translateX(-50%)}}@keyframes dcFooterRise{0%{opacity:0;transform:translateY(115%) rotate(-5deg)}65%{opacity:1;transform:translateY(-5%) rotate(0)}100%{opacity:1;transform:none}}@keyframes dcFooterDraw{to{stroke-dashoffset:0}}@keyframes dcFooterFade{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}.dc-footer-track{animation:dcFooterMarquee 28s linear infinite}.dc-footer-letter{transform-origin:50% 100%;animation:dcFooterRise .95s cubic-bezier(.2,.85,.25,1.15) both}.dc-footer-letter:nth-child(2n){animation-delay:55ms}.dc-footer-letter:nth-child(3n){animation-delay:110ms}.dc-footer-letter:nth-child(4n){animation-delay:165ms}.dc-footer-scribble path{stroke-dasharray:1100;stroke-dashoffset:1100;animation:dcFooterDraw 1.3s ease-out .7s forwards}.dc-footer-scribble path+path{animation-delay:.85s}.dc-footer-marquee{animation:dcFooterFade .8s ease-out 1.25s both}.dc-footer-outline{-webkit-text-stroke:1.5px #0f0f0f;color:transparent}@media(prefers-reduced-motion:reduce){.dc-footer-track{animation-play-state:paused}.dc-footer-letter,.dc-footer-scribble path,.dc-footer-marquee{animation:none!important}.dc-footer-scribble path{stroke-dashoffset:0}}`}</style>
+      <svg width="0" height="0" className="absolute" aria-hidden="true"><defs><filter id="dc-footer-rough"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="4" result="n" /><feDisplacementMap in="SourceGraphic" in2="n" scale="2.5" /></filter></defs></svg>
     </footer>
   );
 }

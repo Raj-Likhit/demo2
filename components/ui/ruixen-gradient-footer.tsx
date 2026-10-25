@@ -5,9 +5,9 @@ import { useEffect, useId, useRef, useState, type CSSProperties, type ReactNode 
 type Stop = { offset: number; color: string }
 const VBW = 1271, VBH = 599
 const DEFAULT_STOPS: Stop[] = [
-  { offset: 0, color: "#340B05" }, { offset: .1827, color: "#0358F7" }, { offset: .2837, color: "#5092C7" },
-  { offset: .4135, color: "#E1ECFE" }, { offset: .5866, color: "#FFD400" }, { offset: .6827, color: "#FA3D1D" },
-  { offset: .8029, color: "#FD02F5" }, { offset: 1, color: "#FFC0FD00" },
+  { offset: 0, color: "#111111" }, { offset: .1827, color: "#292929" }, { offset: .2837, color: "#555555" },
+  { offset: .4135, color: "#eeeeee" }, { offset: .5866, color: "#bdbdbd" }, { offset: .6827, color: "#777777" },
+  { offset: .8029, color: "#444444" }, { offset: 1, color: "#ffffff00" },
 ]
 const clamp = (value: number) => Math.max(0, Math.min(1, value))
 const bellHeights = (count: number, peak: number, valley: number) => Array.from({ length: count }, (_, i) => {
