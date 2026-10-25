@@ -1,4 +1,70 @@
 
+"use client";
+
+import { useEffect, useRef } from "react";
+
+const BALL_SIZE = 380;
+
+function AboutInversion() {
+  const trackRef = useRef<HTMLElement>(null);
+  const ballRef = useRef<HTMLDivElement>(null);
+  const clipRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const main = track.closest("main");
+    const previousOverflow = main?.style.overflow;
+    if (main) main.style.overflow = "clip";
+
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const vh = window.innerHeight;
+      const vw = track.clientWidth;
+      const progress = Math.min(1, Math.max(0, -track.getBoundingClientRect().top / (vh * 2)));
+      const eased = progress * progress;
+      const yOffset = (1 - eased) * (vh / 2 + BALL_SIZE / 2);
+      const size = BALL_SIZE + eased * (Math.max(vw, vh) * 2.8 - BALL_SIZE);
+
+      if (ballRef.current) {
+        ballRef.current.style.width = ballRef.current.style.height = `${size}px`;
+        ballRef.current.style.transform = `translate(-50%, calc(-50% + ${yOffset}px))`;
+      }
+      if (clipRef.current) {
+        clipRef.current.style.clipPath = `circle(${size / 2}px at ${vw / 2}px ${vh / 2 + yOffset}px)`;
+      }
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+      if (main) main.style.overflow = previousOverflow ?? "";
+    };
+  }, []);
+
+  return (
+    <section ref={trackRef} aria-label="About DevCatalyst" className="h-[300vh] bg-catalyst-paper">
+      <div className="sticky top-0 h-screen overflow-hidden bg-catalyst-paper text-center">
+        <div ref={ballRef} aria-hidden="true" className="absolute left-1/2 top-1/2 rounded-full bg-catalyst-forest will-change-[width,height,transform]" />
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-catalyst-forest">
+          <p className="font-mono text-xs uppercase tracking-[0.2em]">About — DevCatalyst</p>
+          <p className="mt-5 text-[clamp(2.75rem,6vw,5.75rem)] font-semibold leading-[.98] tracking-[-.065em]">Curious minds,<br /><span className="text-catalyst-muted">real projects.</span></p>
+        </div>
+        <div ref={clipRef} aria-hidden="true" className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-catalyst-paper">
+          <p className="font-mono text-xs uppercase tracking-[0.2em]">About — DevCatalyst</p>
+          <p className="mt-5 text-[clamp(2.75rem,6vw,5.75rem)] font-semibold leading-[.98] tracking-[-.065em]">Curious minds,<br /><span className="text-catalyst-lime">real projects.</span></p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 const moments = [
   { image: "https://cdn.21st.dev/assets/mirror/70/706df1e921d12b172a0f531bd7e376496acadd61faff14d909d8a02c81330ff6.jpg", alt: "Students sharing ideas around a table" },
   { image: "https://cdn.21st.dev/assets/mirror/f2/f205346f850085c841beb3a7ca6115bb8aaf8268992606812b207a1993c5769f.jpg", alt: "A close look at a team project in progress" },
@@ -14,7 +80,9 @@ const principles = [
 
 export default function AboutSection() {
   return (
-    <section id="about" aria-labelledby="about-title" className="relative overflow-hidden bg-catalyst-paper px-6 py-24 text-catalyst-ink sm:py-32 lg:px-10">
+    <>
+      <AboutInversion />
+      <section id="about" aria-labelledby="about-title" className="relative overflow-hidden bg-catalyst-paper px-6 py-24 text-catalyst-ink sm:py-32 lg:px-10">
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-12 lg:grid-cols-[1.05fr_.95fr] lg:items-center lg:gap-20">
           <div>
@@ -39,6 +107,7 @@ export default function AboutSection() {
           </article>)}
         </div>
       </div>
-    </section>
+      </section>
+    </>
   );
 }
