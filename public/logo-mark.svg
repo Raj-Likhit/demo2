@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="100%" height="100%">
+  <g fill="none" stroke="#000000" stroke-width="23" stroke-linejoin="miter" stroke-miterlimit="10">
+    <polygon points="479,161 215,313 215,421 479,573 479,450 353,367 479,294" />
+    <polygon points="521,161 785,313 785,421 521,573 521,450 647,367 521,294" />
+    <polygon points="305,517 389,565 389,683 500,747 611,683 611,565 695,517 695,729 500,842 305,729" />
+  </g>
+  <g fill="#000000" stroke="none">
+    <polygon points="232,430 255,444 255,525 232,525" />
+    <circle cx="243.5" cy="536" r="28.5" />
+    <polygon points="230,552 257,552 276,605 211,605" />
+  </g>
+</svg>

@@ -5,3 +5,6 @@ out/
 *.log
 .env*
 !.env.example
+
+# Kiro IDE configuration (local only)
+.kiro/
