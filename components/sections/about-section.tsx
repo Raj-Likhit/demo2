@@ -23,9 +23,10 @@ function AboutInversion() {
       const vh = window.innerHeight;
       const vw = track.clientWidth;
       const progress = Math.min(1, Math.max(0, -track.getBoundingClientRect().top / (vh * 2)));
-      const eased = progress * progress;
-      const yOffset = (1 - eased) * (vh / 2 + BALL_SIZE / 2);
-      const size = BALL_SIZE + eased * (Math.max(vw, vh) * 2.8 - BALL_SIZE);
+      const centerProgress = Math.min(1, progress * 2);
+      const expandProgress = Math.max(0, (progress - 0.5) * 2);
+      const yOffset = (1 - centerProgress * centerProgress) * (vh / 2 + BALL_SIZE / 2);
+      const size = BALL_SIZE + expandProgress * expandProgress * (Math.max(vw, vh) * 2.8 - BALL_SIZE);
 
       if (ballRef.current) {
         ballRef.current.style.width = ballRef.current.style.height = `${size}px`;
