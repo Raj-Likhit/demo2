@@ -63,7 +63,7 @@ export default function EventFolderGallery() {
           <div className={styles["folder-wrap"]} key={item.id}>
             <button type="button" className={cx("folder", ...(active === itemIndex ? ["is-open"] : []))}
               style={{ "--base-tilt": `${item.tilt}deg` } as CSSProperties}
-              aria-haspopup="dialog" aria-label={`${item.title}, ${item.photos.length} prints`}
+              aria-haspopup="dialog" aria-label={`${item.title}, ${item.photos.length} editable photo placeholders`}
               onPointerMove={tilt} onPointerLeave={resetTilt}
               onClick={(click) => { opener.current = click.currentTarget; setIndex(0); setActive(itemIndex); }}>
               <span className={styles.folder__shadow} />
@@ -78,14 +78,14 @@ export default function EventFolderGallery() {
               ))}
               <span className={styles.folder__front}>
                 <span className={styles.folder__badge}>{item.badge}</span>
-                <span className={styles.folder__info}><strong>{item.title}</strong><em>{item.photos.length} prints · {item.date}</em></span>
+                <span className={styles.folder__info}><strong>{item.title}</strong><em>{item.photos.length} sample photos · {item.date}</em></span>
                 <span className={styles.folder__action}><ArrowUpRight aria-hidden="true" /></span>
               </span>
             </button>
           </div>
         ))}
       </div>
-      <dialog ref={dialog} className={cx("gallery", "modal")} aria-labelledby="dossier-title"
+      <dialog ref={dialog} className={cx("gallery", "modal")} aria-labelledby="event-details-title"
         onCancel={() => setActive(null)}
         onClick={(click) => { if (click.target === click.currentTarget) setActive(null); }}
         onKeyDown={(key) => {
@@ -93,8 +93,8 @@ export default function EventFolderGallery() {
         }}>
         {event && <div className={styles.gal__dlg}>
           <header className={styles.gal__head}>
-            <div><h3 id="dossier-title">{event.title}</h3><p>{event.date} · {event.photos.length} prints in archive</p></div>
-            <button type="button" className={styles["sticker-btn"]} aria-label="Close dossier" onClick={() => setActive(null)} autoFocus><X aria-hidden="true" /></button>
+            <div><h3 id="event-details-title">{event.title}</h3><p>{event.date} · Replace the sample moments with approved event photos.</p></div>
+            <button type="button" className={styles["sticker-btn"]} aria-label="Close event details" onClick={() => setActive(null)} autoFocus><X aria-hidden="true" /></button>
           </header>
           <div className="relative">
             <button type="button" className={cx("sticker-btn", "nav-arrow", "prev")} aria-label="Previous print" onClick={() => navigate(-1)}><ChevronLeft aria-hidden="true" /></button>

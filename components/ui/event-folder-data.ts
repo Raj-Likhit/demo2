@@ -74,44 +74,44 @@
 
   export const EVENTS = [
     {
-      id: "build-night",
-      title: "Build Night",
-      tag: "Vol. 01",
-      date: "Wed, 19 Aug",
-      badge: "LIVE LAB",
+      id: "event-one",
+      title: "[ADD EVENT]",
+      tag: "PLACEHOLDER",
+      date: "[ADD DATE]",
+      badge: "EDIT DETAILS",
       tilt: -2,
       photos: [
-        { caption: "First pull request celebration", seed: 0 },
-        { caption: "Whiteboard architecture mapping", seed: 1 },
-        { caption: "Late-night refactoring sprint", seed: 2 },
-        { caption: "Demo time with mentors", seed: 0 }
+        { caption: "[ADD PHOTO 1]", seed: 0 },
+        { caption: "[ADD PHOTO 2]", seed: 1 },
+        { caption: "[ADD PHOTO 3]", seed: 2 },
+        { caption: "[ADD PHOTO 4]", seed: 0 }
       ]
     },
     {
-      id: "hackathon",
-      title: "48H Hack",
-      tag: "Vol. 02",
-      date: "Sat, 12 Sep",
-      badge: "HACKATHON",
+      id: "event-two",
+      title: "[ADD EVENT]",
+      tag: "PLACEHOLDER",
+      date: "[ADD DATE]",
+      badge: "EDIT DETAILS",
       tilt: 1.5,
       photos: [
-        { caption: "Midnight energy drink summit", seed: 1 },
-        { caption: "Debugging the final endpoint", seed: 2 },
-        { caption: "Pitch deck rehearsal", seed: 0 },
-        { caption: "Grand prize announcement", seed: 1 }
+        { caption: "[ADD PHOTO 1]", seed: 1 },
+        { caption: "[ADD PHOTO 2]", seed: 2 },
+        { caption: "[ADD PHOTO 3]", seed: 0 },
+        { caption: "[ADD PHOTO 4]", seed: 1 }
       ]
     },
     {
-      id: "workshop",
-      title: "Design Lab",
-      tag: "Vol. 03",
-      date: "Fri, 02 Oct",
-      badge: "WORKSHOP",
+      id: "event-three",
+      title: "[ADD EVENT]",
+      tag: "PLACEHOLDER",
+      date: "[ADD DATE]",
+      badge: "EDIT DETAILS",
       tilt: -1,
       photos: [
-        { caption: "Component system teardown", seed: 2 },
-        { caption: "Typography pairing roast", seed: 0 },
-        { caption: "Prototyping physics on Figma", seed: 1 }
+        { caption: "[ADD PHOTO 1]", seed: 2 },
+        { caption: "[ADD PHOTO 2]", seed: 0 },
+        { caption: "[ADD PHOTO 3]", seed: 1 }
       ]
     }
   ];

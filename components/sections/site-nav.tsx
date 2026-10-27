@@ -2,13 +2,14 @@
 "use client";
 
 import { ArrowUpRight, Menu, X } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const NAV_LINKS = [
-  { label: "What we do", href: "#workflow" },
-  { label: "Projects", href: "#gallery" },
-  { label: "Events", href: "#testimonials" },
-  { label: "Team", href: "#about" },
+  { label: "Community", href: "/#about" },
+  { label: "Events", href: "/#gallery" },
+  { label: "Stories", href: "/#testimonials" },
+  { label: "Partner", href: "/partner-with-devcatalyst" },
 ];
 
 export default function SiteNav() {
@@ -70,8 +71,8 @@ export default function SiteNav() {
           className={`relative flex min-h-[60px] items-center justify-between gap-3 rounded-full border px-3 py-2 shadow-[0_5px_24px_rgba(0,0,0,0.06)] backdrop-blur-2xl backdrop-saturate-150 transition-[background-color,box-shadow,border-color] duration-300 supports-[backdrop-filter]:bg-catalyst-white/70 ${scrolled ? "border-catalyst-forest/15 bg-catalyst-white/90 shadow-[0_10px_35px_rgba(0,0,0,0.10)]" : "border-catalyst-forest/10 bg-catalyst-white/80"}`}
         >
           {/* Brand */}
-          <a
-            href="#home"
+          <Link
+            href="/#home"
             onClick={closeMobileMenu}
             aria-label="DevCatalyst home"
             className="group flex min-w-0 shrink-0 items-center gap-2.5 outline-none focus-visible:ring-2 focus-visible:ring-catalyst-forest focus-visible:ring-offset-2"
@@ -88,33 +89,33 @@ export default function SiteNav() {
             <span className="text-[16px] font-semibold tracking-[-0.045em] text-catalyst-ink sm:text-[18px]">
               DevCatalyst
             </span>
-          </a>
+          </Link>
 
           {/* Desktop navigation */}
           <div className="hidden items-center gap-5 lg:flex xl:gap-7">
             {NAV_LINKS.map((link) => (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
                 className="whitespace-nowrap rounded-full px-1 py-2 text-[13px] font-medium text-catalyst-ink transition-colors duration-200 hover:text-catalyst-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-catalyst-forest focus-visible:ring-offset-2"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
 
           {/* Desktop primary CTA */}
-          <a
-            href="#about"
+          <Link
+            href="/#gallery"
             className="group hidden shrink-0 items-center justify-center gap-2 rounded-full bg-catalyst-forest px-4 py-2.5 text-[12px] font-medium text-white transition-colors duration-200 hover:bg-catalyst-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-catalyst-forest focus-visible:ring-offset-4 lg:inline-flex"
           >
-            Join the club
+            Explore events
             <ArrowUpRight
               size={15}
               strokeWidth={1.8}
               className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
             />
-          </a>
+          </Link>
 
           {/* Mobile menu toggle */}
           <button
@@ -144,24 +145,24 @@ export default function SiteNav() {
           >
             <div className="flex flex-col gap-1">
               {NAV_LINKS.map((link) => (
-                <a
+                <Link
                   key={link.href}
                   href={link.href}
                   onClick={closeMobileMenu}
                   className="rounded-xl px-4 py-3.5 text-sm font-medium text-catalyst-ink transition-colors hover:bg-catalyst-sage focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-catalyst-forest"
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
 
-              <a
-                href="#about"
+              <Link
+                href="/#gallery"
                 onClick={closeMobileMenu}
                 className="mt-2 flex min-h-12 items-center justify-center gap-2 rounded-full bg-catalyst-forest px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-catalyst-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-catalyst-forest focus-visible:ring-offset-2"
               >
-                Join the club
+                Explore events
                 <ArrowUpRight size={16} strokeWidth={1.8} />
-              </a>
+              </Link>
             </div>
           </div>
         )}

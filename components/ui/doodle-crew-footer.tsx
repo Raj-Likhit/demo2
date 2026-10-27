@@ -3,12 +3,13 @@
 import * as React from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from "next/link";
 
 const links = [
-  { label: "What we do", href: "#workflow" },
-  { label: "Projects", href: "#gallery" },
-  { label: "Events", href: "#testimonials" },
-  { label: "Team", href: "#about" },
+  { label: "Community", href: "/#about" },
+  { label: "Events", href: "/#gallery" },
+  { label: "Stories", href: "/#testimonials" },
+  { label: "Partner", href: "/partner-with-devcatalyst" },
   { label: "GitHub", href: "https://github.com/", external: true },
 ];
 
@@ -20,12 +21,8 @@ function Arrow() {
   return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>;
 }
 
-function Github() {
-  return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-.9-2.6c3.1-.4 6.4-1.5 6.4-6.9a5.4 5.4 0 0 0-1.5-3.7 5 5 0 0 0-.1-3.7s-1.2-.4-3.9 1.4a13.3 13.3 0 0 0-7 0C6.3 1.3 5.1 1.7 5.1 1.7a5 5 0 0 0-.1 3.7A5.4 5.4 0 0 0 3.5 9c0 5.4 3.3 6.5 6.4 6.9a3.4 3.4 0 0 0-.9 2.6V22" /></svg>;
-}
-
 export default function DoodleCrewFooter() {
-  const repeated = ["Ideas", "People", "Projects", "Impact", "DevCatalyst"];
+  const repeated = ["Students", "Events", "Community", "Partnerships", "DevCatalyst"];
   const footerRef = React.useRef<HTMLElement>(null);
   const stageRef = React.useRef<HTMLDivElement>(null);
   const wordRef = React.useRef<HTMLHeadingElement>(null);
@@ -138,10 +135,10 @@ export default function DoodleCrewFooter() {
           <svg className="dc-footer-scribble pointer-events-none absolute -bottom-[7%] left-[1%] h-[34px] w-[98%]" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true"><path d="M12 34C180 18 360 44 540 30S880 22 988 32" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" /><path d="M20 44C200 32 420 50 620 38S900 32 978 40" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" opacity=".4" /></svg>
         </div>
 
-        <h3 className="dc-footer-reveal mt-[clamp(56px,8vh,90px)] text-center text-[clamp(20px,2.6vw,36px)] font-black tracking-[-.035em]">Build beyond <span className="text-[#8a8a8a]">the syllabus.</span></h3>
+        <h3 className="dc-footer-reveal mt-[clamp(56px,8vh,90px)] text-center text-[clamp(20px,2.6vw,36px)] font-black tracking-[-.035em]">Students come together. <span className="text-[#8a8a8a]">Community grows from there.</span></h3>
         <div className="dc-footer-reveal mt-[30px] flex flex-wrap justify-center gap-[14px] px-[4vw]">
-          <a href="#contact" className="flex items-center gap-2.5 rounded-full bg-[#0f0f0f] px-[30px] py-[15px] text-base font-medium text-white transition hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_#a3a3a3]">Join DevCatalyst <Arrow /></a>
-          <a href="#gallery" className="flex items-center gap-2.5 rounded-full border-[1.5px] border-[#0f0f0f] px-[30px] py-[15px] text-base font-medium transition hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_#0f0f0f]"><Github /> Explore Projects</a>
+          <Link href="/#gallery" className="flex items-center gap-2.5 rounded-full bg-[#0f0f0f] px-[30px] py-[15px] text-base font-medium text-white transition hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_#a3a3a3]">Explore events <Arrow /></Link>
+          <Link href="/partner-with-devcatalyst" className="flex items-center gap-2.5 rounded-full border-[1.5px] border-[#0f0f0f] px-[30px] py-[15px] text-base font-medium transition hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_#0f0f0f]">Partner with us</Link>
         </div>
 
         <div ref={marqueeRef} className="dc-footer-marquee mt-[clamp(70px,10vh,110px)] overflow-hidden border-y border-black py-[clamp(10px,1.6vw,20px)]">
@@ -153,7 +150,7 @@ export default function DoodleCrewFooter() {
 
       <div className="dc-footer-bottom flex flex-wrap items-center justify-between gap-[18px] border-t border-[#e6e6e6] px-[4vw] py-6 font-mono text-[11px] uppercase tracking-[0.25em] text-[#555]">
         <span>© {new Date().getFullYear()} DevCatalyst</span>
-        <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-[26px] gap-y-2">{links.map((link) => <a key={link.label} href={link.href} {...(link.external ? { target: "_blank", rel: "noreferrer" } : {})} className="transition-colors hover:text-black hover:underline">{link.label}</a>)}</nav>
+        <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-[26px] gap-y-2">{links.map((link) => link.external ? <a key={link.label} href={link.href} target="_blank" rel="noreferrer" className="transition-colors hover:text-black hover:underline">{link.label}</a> : <Link key={link.label} href={link.href} className="transition-colors hover:text-black hover:underline">{link.label}</Link>)}</nav>
         <span>Made on campus</span>
       </div>
       <svg width="0" height="0" className="absolute" aria-hidden="true"><defs><filter id="dc-footer-rough"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="4" result="n" /><feDisplacementMap in="SourceGraphic" in2="n" scale="2.5" /></filter></defs></svg>

@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Box, Github, Globe, Lightbulb, Users } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Box, Globe, Lightbulb, Users } from "lucide-react";
 import { gsap } from "gsap";
 import { useLayoutEffect, useRef } from "react";
 
@@ -55,7 +55,7 @@ export default function HomeHero() {
             <path d="M17 2l2.8 12 10.5-6-8 10.1 11 4.2-12 .8 3.6 11.2-7.8-9.1-7 9.7 2.6-11.8L1 25l10.2-6.2L3 10l11 5.2L17 2Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
           </svg>
           <p className="text-[12px] font-semibold uppercase leading-[1.45] tracking-[0.08em] text-catalyst-ink">
-            Ideas<br />People<br />Projects<br />Impact
+            Students<br />Events<br />Community<br />Partnerships
           </p>
           <span aria-hidden="true" className="absolute -bottom-2 right-0 h-px w-12 rotate-[-12deg] bg-catalyst-forest" />
         </div>
@@ -70,48 +70,42 @@ export default function HomeHero() {
                 className="h-6 w-px bg-catalyst-forest"
               />
               <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-catalyst-muted sm:text-xs">
-                Curious minds. Real projects.
+                Community, events, collaboration
               </span>
             </div>
 
             <h1
               id="hero-title"
               data-hero-title
-              className="max-w-full text-[clamp(2.65rem,6.8vw,7rem)] font-semibold leading-[0.9] tracking-[-0.075em] text-catalyst-ink"
+              className="max-w-full text-[clamp(2.55rem,6.2vw,6rem)] font-semibold leading-[0.92] tracking-[-0.055em] text-catalyst-ink"
             >
-              <span className="block whitespace-nowrap">
-                Build beyond
-              </span>
-
-              <span className="block whitespace-nowrap text-catalyst-muted">
-                the syllabus.
-              </span>
+              <span className="block">Where students</span>
+              <span className="block text-catalyst-muted">connect and create.</span>
             </h1>
 
             <p data-hero-copy className="mt-7 max-w-[465px] text-base leading-7 text-catalyst-muted sm:text-lg sm:leading-7">
-              A community for students who love technology.
-              Learn, collaborate, build real projects, and create
-              opportunities together.
+              DevCatalyst brings students together through technology,
+              events, and collaboration with industry and campus communities.
             </p>
 
             <div data-hero-actions className="mt-7 flex flex-wrap items-center gap-3">
               <a
                 id="start"
-                href="#about"
+                href="#gallery"
                 className="group inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-catalyst-forest px-6 py-3 text-sm font-semibold text-white transition duration-200 hover:bg-catalyst-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-catalyst-forest focus-visible:ring-offset-4"
               >
-                Join DevCatalyst
+                Explore events
                 <ArrowRight
                   size={17}
                   className="transition-transform duration-200 group-hover:translate-x-1"
                 />
               </a>
               <a
-                href="#gallery"
-                className="group hidden min-h-12 items-center justify-center gap-3 rounded-full border border-catalyst-forest bg-catalyst-white/90 px-6 py-3 text-sm font-medium text-catalyst-ink transition duration-200 hover:bg-catalyst-sage focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-catalyst-forest focus-visible:ring-offset-4 lg:inline-flex"
+                href="/partner-with-devcatalyst"
+                className="group inline-flex min-h-12 items-center justify-center gap-3 rounded-full border border-catalyst-forest bg-catalyst-white/90 px-6 py-3 text-sm font-medium text-catalyst-ink transition duration-200 hover:bg-catalyst-sage focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-catalyst-forest focus-visible:ring-offset-4"
               >
-                <Github size={18} strokeWidth={1.8} />
-                Explore Projects
+                Partner with us
+                <ArrowUpRight size={17} strokeWidth={1.8} />
               </a>
             </div>
 
