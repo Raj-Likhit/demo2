@@ -6,22 +6,34 @@ import SiteFooter from "@/components/sections/site-footer";
 const collaborationWays = [
   {
     title: "Co-host an event or workshop",
-    detail: "[Replace with a confirmed event format, topic, and intended student audience.]",
+    detail: "Plan a session around a shared student interest, from a hands-on workshop to a larger event.",
   },
   {
     title: "Share a speaker or mentor",
-    detail: "[Add approved expertise, participation details, and the student benefit.]",
+    detail: "Give students a chance to learn directly from people doing the work and ask practical questions.",
   },
   {
     title: "Bring an industry challenge",
-    detail: "[Describe a suitable challenge and how students could explore it.]",
+    detail: "Bring a real problem for students to explore, prototype, and discuss with your team.",
   },
 ];
 
-const placeholders = [
-  { title: "Partner", value: "[ADD VERIFIED PARTNER NAME]" },
-  { title: "Collaboration", value: "[ADD CONFIRMED EVENT OR ACTIVITY]" },
-  { title: "Student value", value: "[ADD VERIFIED OUTCOME]" },
+const collaborations = [
+  {
+    partner: "FreshGradPrep Community",
+    event: "FreshGradPrep's first event",
+    detail: "DevCatalyst volunteers supported planning, coordination, and event-day operations alongside the host team.",
+  },
+  {
+    partner: "Centle India",
+    event: "SummerSaaS AI Hackathon 2026",
+    detail: "The team supported an event with a 36-hour onsite round at BITS Pilani, Hyderabad Campus.",
+  },
+  {
+    partner: "Beacon Technologies",
+    event: "Beacon's AI Foundry",
+    detail: "DevCatalyst partnered on a 24-hour Agentic AI hackathon at IIT Hyderabad in June 2026.",
+  },
 ];
 
 export default function PartnerWithDevCatalyst() {
@@ -93,35 +105,32 @@ export default function PartnerWithDevCatalyst() {
           </h2>
           <div className="border-t border-catalyst-line pt-5">
             <p className="max-w-2xl text-base leading-7 text-catalyst-muted sm:text-lg sm:leading-8">
-              The best collaboration starts with what students need and what a partner can genuinely contribute. Shape the format together, then describe the expected benefit in clear, verifiable terms.
-            </p>
-            <p className="mt-6 border-t border-catalyst-line pt-4 text-sm leading-6 text-catalyst-muted">
-              Team placeholder: add the specific student benefit this partnership would support.
+              Shape the format around what students need and what a partner can genuinely contribute. Shared events can create room to learn, make connections, and try ideas together.
             </p>
           </div>
         </div>
       </section>
 
-      <section aria-labelledby="partner-story-title" className="bg-catalyst-forest px-6 py-20 text-white sm:py-24 lg:px-10">
+      <section data-nav-theme="dark" aria-labelledby="partner-story-title" className="bg-catalyst-forest px-6 py-20 text-white sm:py-24 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <h2 id="partner-story-title" className="max-w-3xl text-3xl font-semibold leading-tight tracking-[-.035em] sm:text-4xl">
-            Replace this with a real collaboration story.
+            Built alongside other communities.
           </h2>
           <p className="mt-4 max-w-2xl text-sm leading-6 text-white/75">
-            Editable placeholders for the DevCatalyst team. Add only details and quotes approved for publication.
+            A few collaborations shared by the people who worked with the DevCatalyst team.
           </p>
-          <dl className="mt-12 grid gap-x-10 sm:grid-cols-3">
-            {placeholders.map((item) => (
-              <div key={item.title} className="border-t border-white/30 py-5">
-                <dt className="text-xs font-semibold uppercase tracking-[.14em] text-white/65">{item.title}</dt>
-                <dd className="mt-3 text-base font-medium">{item.value}</dd>
-              </div>
+          <ul className="mt-12 grid gap-x-10 sm:grid-cols-2 lg:grid-cols-3">
+            {collaborations.map((item) => (
+              <li key={item.partner} className="border-t border-white/30 py-5">
+                <p className="text-xl font-semibold">{item.partner}</p>
+                <p className="mt-2 text-sm font-medium text-white/85">{item.event}</p>
+                <p className="mt-3 text-sm leading-6 text-white/70">{item.detail}</p>
+              </li>
             ))}
-          </dl>
-          <blockquote className="mt-8 border-t border-white/30 pt-6 text-lg leading-relaxed sm:text-xl">
-            [ADD VERIFIED AND APPROVED STUDENT OR PARTNER TESTIMONIAL]
-            <footer className="mt-4 text-sm text-white/70">[ADD APPROVED NAME, ROLE, AND ORGANIZATION]</footer>
-          </blockquote>
+          </ul>
+          <Link href="/#testimonials" className="mt-8 inline-flex min-h-11 items-center gap-2 rounded-full text-sm font-medium underline underline-offset-4 hover:text-white/75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-catalyst-forest">
+            Read partner testimonials <ArrowRight size={16} aria-hidden="true" />
+          </Link>
         </div>
       </section>
 

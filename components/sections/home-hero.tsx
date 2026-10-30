@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { useLayoutEffect, useRef } from "react";
 
 import { CrowdCanvas } from "@/components/ui/skiper39";
+import AnimatedHeroHeadline from "@/components/ui/animated-hero-headline";
 import SiteNav from "./site-nav";
 
 const activities = [
@@ -74,14 +75,7 @@ export default function HomeHero() {
               </span>
             </div>
 
-            <h1
-              id="hero-title"
-              data-hero-title
-              className="max-w-full text-[clamp(2.55rem,6.2vw,6rem)] font-semibold leading-[0.92] tracking-[-0.055em] text-catalyst-ink"
-            >
-              <span className="block">Where students</span>
-              <span className="block text-catalyst-muted">connect and create.</span>
-            </h1>
+            <AnimatedHeroHeadline />
 
             <p data-hero-copy className="mt-7 max-w-[465px] text-base leading-7 text-catalyst-muted sm:text-lg sm:leading-7">
               DevCatalyst brings students together through technology,
@@ -91,20 +85,22 @@ export default function HomeHero() {
             <div data-hero-actions className="mt-7 flex flex-wrap items-center gap-3">
               <a
                 id="start"
-                href="#gallery"
+                href="https://github.com/DevCatalyst-OSS/"
+                target="_blank"
+                rel="noreferrer noopener"
                 className="group inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-catalyst-forest px-6 py-3 text-sm font-semibold text-white transition duration-200 hover:bg-catalyst-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-catalyst-forest focus-visible:ring-offset-4"
               >
-                Explore events
+                Explore projects
                 <ArrowRight
                   size={17}
                   className="transition-transform duration-200 group-hover:translate-x-1"
                 />
               </a>
               <a
-                href="/partner-with-devcatalyst"
+                href="#contact"
                 className="group inline-flex min-h-12 items-center justify-center gap-3 rounded-full border border-catalyst-forest bg-catalyst-white/90 px-6 py-3 text-sm font-medium text-catalyst-ink transition duration-200 hover:bg-catalyst-sage focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-catalyst-forest focus-visible:ring-offset-4"
               >
-                Partner with us
+                Find your people
                 <ArrowUpRight size={17} strokeWidth={1.8} />
               </a>
             </div>

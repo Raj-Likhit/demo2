@@ -6,11 +6,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 
 const links = [
-  { label: "Community", href: "/#about" },
-  { label: "Events", href: "/#gallery" },
-  { label: "Stories", href: "/#testimonials" },
+  { label: "About us", href: "/#about" },
+  { label: "Gallery", href: "/event-gallery" },
+  { label: "Testimonials", href: "/#testimonials" },
+  { label: "FAQ", href: "/#faq" },
   { label: "Partner", href: "/partner-with-devcatalyst" },
-  { label: "GitHub", href: "https://github.com/", external: true },
+  { label: "GitHub", href: "https://github.com/DevCatalyst-OSS/", external: true },
 ];
 
 function Sparkle({ className = "" }: { className?: string }) {
@@ -137,8 +138,9 @@ export default function DoodleCrewFooter() {
 
         <h3 className="dc-footer-reveal mt-[clamp(56px,8vh,90px)] text-center text-[clamp(20px,2.6vw,36px)] font-black tracking-[-.035em]">Students come together. <span className="text-[#8a8a8a]">Community grows from there.</span></h3>
         <div className="dc-footer-reveal mt-[30px] flex flex-wrap justify-center gap-[14px] px-[4vw]">
-          <Link href="/#gallery" className="flex items-center gap-2.5 rounded-full bg-[#0f0f0f] px-[30px] py-[15px] text-base font-medium text-white transition hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_#a3a3a3]">Explore events <Arrow /></Link>
-          <Link href="/partner-with-devcatalyst" className="flex items-center gap-2.5 rounded-full border-[1.5px] border-[#0f0f0f] px-[30px] py-[15px] text-base font-medium transition hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0_#0f0f0f]">Partner with us</Link>
+          <a href="https://github.com/DevCatalyst-OSS/" target="_blank" rel="noreferrer noopener" className="flex min-h-12 items-center gap-2.5 rounded-full bg-[#0f0f0f] px-7 py-3.5 text-base font-medium text-white transition-colors hover:bg-[#333] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-4">Explore projects <Arrow /></a>
+          <a href="https://socials.devcatalyst.in/" target="_blank" rel="noreferrer noopener" className="flex min-h-12 items-center gap-2.5 rounded-full border border-[#0f0f0f] px-7 py-3.5 text-base font-medium transition-colors hover:bg-[#f1f1f1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-4">Join DevCatalyst</a>
+          <Link href="/partner-with-devcatalyst" className="flex min-h-12 items-center gap-2.5 rounded-full px-5 py-3.5 text-base font-medium underline decoration-[#bdbdbd] underline-offset-4 transition-colors hover:decoration-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-4">Partner with us</Link>
         </div>
 
         <div ref={marqueeRef} className="dc-footer-marquee mt-[clamp(70px,10vh,110px)] overflow-hidden border-y border-black py-[clamp(10px,1.6vw,20px)]">
