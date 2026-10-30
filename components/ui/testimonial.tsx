@@ -1,77 +1,43 @@
-"use client";
-
-type Testimonial = {
-  quote: string;
-  name: string;
-  role: string;
-  category: string;
-  initial: string;
-};
-
-const testimonials: Testimonial[] = [
-  { quote: "DevCatalyst gave me the confidence to ship my first real product. The feedback is honest, practical, and always encouraging.", name: "Aarav Mehta", role: "Core Maintainer", category: "Open Source", initial: "A" },
-  { quote: "You arrive with a half-built idea and leave with a deployed link. There is no gatekeeping, just people who want to help you build.", name: "Riya Sen", role: "Frontend Developer", category: "Build Nights", initial: "R" },
-  { quote: "When my backend crashed before demo night, four people pulled up chairs and helped me fix it. That kind of community is rare.", name: "Kabir Verma", role: "Systems Lead", category: "Hackathons", initial: "K" },
-  { quote: "I learned more from debugging real projects here than from semesters of theory. Every session leaves me with something I can use.", name: "Naina Rao", role: "Hackathon Finalist", category: "Build Nights", initial: "N" },
-  { quote: "People celebrate your smallest pull request like it matters. That made contributing feel approachable from day one.", name: "Devansh Joshi", role: "Open Source Contributor", category: "Open Source", initial: "D" },
-  { quote: "The best part is the energy: curious people, thoughtful projects, and enough room to experiment without pretending to have it all figured out.", name: "Zoya Khan", role: "Creative Technologist", category: "Hackathons", initial: "Z" },
-];
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import { testimonials, testimonialInitials } from "./testimonial-data";
+import styles from "./testimonial.module.css";
 
 export default function ClientFeedback() {
   return (
-    <section className="w-full overflow-hidden bg-catalyst-paper py-20 text-catalyst-ink">
-      <div className="w-full">
-        <header className="mx-auto max-w-6xl px-5 sm:px-8 lg:px-10">
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-catalyst-forest">Community feedback</p>
-          <h2 className="mt-4 text-4xl font-semibold tracking-[-0.045em] sm:text-6xl">
-            Built by curious minds.
-            <span className="block text-catalyst-muted">Backed by the community.</span>
-          </h2>
-          <p className="mt-5 max-w-lg text-base leading-relaxed text-catalyst-muted sm:text-lg">
-            Real people, real projects, and a little more confidence after every session.
-          </p>
-        </header>
-
-        <div className="relative left-1/2 mt-12 w-screen -translate-x-1/2 overflow-hidden pb-6">
-          <div className="testimonial-marquee flex w-max">
-            {[0, 1].map((copy) => (
-              <div key={copy} className="flex gap-5 pr-5" aria-hidden={copy === 1}>
-                {testimonials.map((item, index) => (
-                  <article
-                    key={`${copy}-${item.name}`}
-                    className="flex min-h-[250px] w-[min(82vw,380px)] flex-col justify-between rounded-2xl border border-catalyst-line bg-catalyst-white p-6"
-                    style={{
-                      backgroundImage: "linear-gradient(rgba(0,0,0,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.055) 1px, transparent 1px)",
-                      backgroundSize: "24px 24px",
-                    }}
-                  >
-                    <div>
-                      <div className="mb-8 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.14em] text-catalyst-forest">
-                        <span>{item.category}</span>
-                        <span>{String(index + 1).padStart(2, "0")} / 06</span>
-                      </div>
-                      <p className="text-lg leading-relaxed tracking-[-0.015em]">“{item.quote}”</p>
-                    </div>
-                    <footer className="mt-10 flex items-center justify-between gap-4 border-t border-catalyst-line pt-4">
-                      <div>
-                        <p className="font-semibold">{item.name}</p>
-                        <p className="mt-1 text-sm text-catalyst-forest">{item.role}</p>
-                      </div>
-                      <span className="grid size-10 shrink-0 place-items-center rounded-full border border-catalyst-forest bg-catalyst-forest text-sm font-semibold text-white">{item.initial}</span>
-                    </footer>
-                  </article>
-                ))}
-              </div>
-            ))}
-          </div>
+    <section className="w-full overflow-hidden bg-catalyst-paper py-20 text-catalyst-ink sm:py-24" aria-labelledby="stories-title">
+      <header className="mx-auto max-w-6xl px-5 sm:px-8 lg:px-10">
+        <h2 id="stories-title" className="max-w-4xl text-balance text-4xl font-semibold tracking-[-0.035em] sm:text-6xl">Relationships make the work work.</h2>
+        <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
+          <p className="max-w-2xl text-base leading-7 text-catalyst-muted sm:text-lg">Notes from people and teams who have worked alongside DevCatalyst.</p>
         </div>
-        <p className="mx-auto mt-1 max-w-6xl px-5 font-mono text-[10px] uppercase tracking-[0.16em] text-catalyst-muted sm:px-8 lg:px-10">Community / in motion</p>
+      </header>
+      <div className={styles.viewport}>
+        <div className={styles.track}>
+          {[0, 1].map((copy) => (
+            <ul key={copy} className={styles.group} aria-hidden={copy === 1 ? true : undefined}>
+              {testimonials.map((item) => (
+                <li key={item.slug} className={styles.card}>
+                  <Link href={`/testimonials/${item.slug}`} tabIndex={copy === 1 ? -1 : undefined} className="flex h-full flex-col justify-between rounded-2xl border border-catalyst-line bg-catalyst-white p-6 transition-colors hover:border-catalyst-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-catalyst-ink">
+                    <div>
+                      <p className="mb-5 text-xs font-medium uppercase tracking-[0.1em] text-catalyst-muted">{item.organization}</p>
+                      <blockquote className="line-clamp-4 text-lg leading-7 tracking-[-0.015em]">&ldquo;{item.excerpt}&rdquo;</blockquote>
+                    </div>
+                    <div>
+                      <div className="mt-7 flex items-center gap-3 border-t border-catalyst-line pt-4">
+                        {item.authorImage ? <span className="size-11 shrink-0 overflow-hidden rounded-full"><Image src={item.authorImage} alt="" width={44} height={44} className="size-11 object-cover object-top" style={{ transform: `scale(${item.portraitScale})`, transformOrigin: item.portraitOrigin }} /></span> : item.companyImage ? <Image src={item.companyImage} alt="" width={88} height={44} className="h-11 w-[88px] shrink-0 rounded-md bg-white p-1 object-contain" /> : <span aria-hidden="true" className="grid size-11 shrink-0 place-items-center rounded-full bg-catalyst-ink text-sm font-semibold text-white">{testimonialInitials(item.name)}</span>}
+                        <div className="min-w-0"><p className="text-sm font-semibold">{item.name}</p><p className="mt-1 text-xs leading-5 text-catalyst-muted">{item.role}</p></div>
+                      </div>
+                      <span className="mt-5 flex items-center justify-between gap-3 text-sm font-medium">View full testimonial <ArrowUpRight aria-hidden="true" size={17} /></span>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div>
       </div>
-      <style>{`
-        .testimonial-marquee { animation: testimonial-scroll 42s linear infinite; }
-        @keyframes testimonial-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        @media (prefers-reduced-motion: reduce) { .testimonial-marquee { animation-play-state: paused; } }
-      `}</style>
     </section>
   );
 }
