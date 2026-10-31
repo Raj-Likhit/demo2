@@ -7,12 +7,9 @@ import { useEffect, useRef, useState } from "react";
 
 const NAV_LINKS = [
   { label: "About us", href: "/#about" },
-  { label: "Gallery", href: "/event-gallery" },
+  { label: "Events & Gallery", href: "/event-gallery" },
   { label: "Testimonials", href: "/#testimonials" },
-  { label: "FAQ", href: "/#faq" },
 ];
-
-const SOCIALS_URL = "https://socials.devcatalyst.in/";
 
 export default function SiteNav() {
   const navRef = useRef<HTMLElement>(null);
@@ -109,7 +106,7 @@ export default function SiteNav() {
               height={36}
               className={`size-9 object-contain transition-[filter] duration-200 motion-reduce:transition-none ${darkTheme ? "invert" : ""}`}
             />
-            <span className={`text-base font-semibold tracking-[-0.035em] sm:text-lg ${inkText}`}>
+            <span className={`hidden text-base font-semibold tracking-[-0.035em] min-[440px]:inline sm:text-lg ${inkText}`}>
               DevCatalyst
             </span>
           </Link>
@@ -126,15 +123,14 @@ export default function SiteNav() {
             ))}
           </div>
 
-          <a
-            href={SOCIALS_URL}
-            target="_blank"
-            rel="noreferrer noopener"
-            className={`group hidden min-h-11 shrink-0 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 lg:inline-flex ${darkTheme ? "bg-catalyst-paper text-catalyst-ink hover:bg-white focus-visible:ring-white focus-visible:ring-offset-catalyst-ink" : "bg-catalyst-forest text-white hover:bg-catalyst-ink focus-visible:ring-catalyst-forest focus-visible:ring-offset-white"}`}
+          <Link
+            href="/partner-with-devcatalyst"
+            onClick={closeMobileMenu}
+            className={`group ml-auto inline-flex min-h-11 shrink-0 items-center justify-center gap-1.5 rounded-full px-3 py-2.5 text-xs font-semibold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:gap-2 sm:px-4 sm:text-sm lg:ml-0 ${darkTheme ? "bg-catalyst-paper text-catalyst-ink hover:bg-white focus-visible:ring-white focus-visible:ring-offset-catalyst-ink" : "bg-catalyst-forest text-white hover:bg-catalyst-ink focus-visible:ring-catalyst-forest focus-visible:ring-offset-white"}`}
           >
-            Join the club
+            Partner with us
             <ArrowUpRight size={15} strokeWidth={1.8} aria-hidden="true" />
-          </a>
+          </Link>
 
           <button
             ref={menuButtonRef}
@@ -165,16 +161,6 @@ export default function SiteNav() {
                   {link.label}
                 </Link>
               ))}
-              <a
-                href={SOCIALS_URL}
-                target="_blank"
-                rel="noreferrer noopener"
-                onClick={closeMobileMenu}
-                className={`mt-2 flex min-h-12 items-center justify-center gap-2 rounded-full px-5 py-3 text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${darkTheme ? "bg-catalyst-paper text-catalyst-ink hover:bg-white focus-visible:ring-white focus-visible:ring-offset-catalyst-ink" : "bg-catalyst-forest text-white hover:bg-catalyst-ink focus-visible:ring-catalyst-forest focus-visible:ring-offset-white"}`}
-              >
-                Join the club
-                <ArrowUpRight size={16} strokeWidth={1.8} aria-hidden="true" />
-              </a>
             </div>
           </div>
         )}
