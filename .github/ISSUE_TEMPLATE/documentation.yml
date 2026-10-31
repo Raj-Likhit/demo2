@@ -1,0 +1,24 @@
+name: Documentation
+description: Report documentation issues or suggest improvements
+labels: [documentation]
+body:
+  - type: textarea
+    id: location
+    attributes:
+      label: Affected documentation
+      description: File path(s) or section(s) that need updates.
+      placeholder: e.g. README.md > Local development
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: What's unclear or incorrect?
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested improvement
+    validations:
+      required: true

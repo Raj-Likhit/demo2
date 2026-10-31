@@ -1,13 +1,44 @@
-# DevCatalyst Chrome Star
+# DevCatalyst Website
 
-A Next.js + TypeScript starter featuring a Three.js chrome-star visual, a GSAP intro sequence, and a responsive editorial-style homepage.
+Official website for the DevCatalyst student community, built with Next.js, TypeScript, and Tailwind CSS.
 
-## Requirements
+## Overview
 
-- Node.js 20.9 or newer
+The site highlights DevCatalyst's mission, events, testimonials, and collaboration opportunities for students and industry partners.
+
+## Features
+
+- Landing page with animated sections and responsive layout
+- Event gallery pages and media-driven storytelling
+- Testimonials overview and detailed testimonial route (`/testimonials/[slug]`)
+- Partner collaboration page (`/partner-with-devcatalyst`)
+- Contact section with client-side validation
+
+## Tech stack
+
+- Next.js 15 (App Router)
+- React 19 + TypeScript
+- Tailwind CSS + shadcn/ui primitives
+- Motion and Three.js ecosystem components for UI/visual interactions
+
+## Project structure
+
+```text
+app/                  # Routes and page entry points
+components/           # Shared UI and section components
+lib/                  # Utility functions
+public/               # Static assets (event gallery, logos, testimonials)
+appscript/            # Optional Google Apps Script integration files
+```
+
+## Getting started
+
+### Prerequisites
+
+- Node.js 20.9+
 - npm
 
-## Run locally
+### Install and run
 
 ```bash
 npm install
@@ -16,52 +47,53 @@ npm run dev
 
 Open http://localhost:3000.
 
-## Production build
+## Environment configuration
+
+Copy the example file and adjust values if you plan to wire the contact form backend:
 
 ```bash
-npm run build
-npm start
+cp .env.example .env.local
 ```
 
-## Customize
+Current environment key:
 
-- `components/ChromeStar.tsx` — procedural star geometry, chrome material, environment lighting, and rotation.
-- `app/page.tsx` — homepage content and GSAP intro timeline.
-- `app/globals.css` — colors, layout, typography, responsive styles, and animation support.
-- `app/layout.tsx` — metadata and page shell.
+- `NEXT_PUBLIC_CONTACT_SCRIPT_URL`: reserved for future contact form integration (the current form validates input but does not submit data).
 
-## Intro behavior
+## Validation and quality checks
 
-The intro plays once per browser session. Refreshing or navigating back in the same session skips it. The intro is skipped when the browser requests reduced motion.
+Run before opening a pull request:
 
-To test it again, open DevTools and run:
+```bash
+npm run lint
+npm run build
+```
+
+## Local development notes
+
+- Intro animation state is stored in session storage (`devcatalyst-intro-played`).
+- To re-test intro behavior:
 
 ```js
 sessionStorage.removeItem("devcatalyst-intro-played");
 location.reload();
 ```
 
-## Push to GitHub
+## Deployment
 
-Create an empty repository on GitHub, then run:
+Deploy on Vercel as a standard Next.js app:
 
-```bash
-git init
-git add .
-git commit -m "Build DevCatalyst chrome star homepage"
-git branch -M main
-git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
-git push -u origin main
-```
+1. Import this repository in Vercel.
+2. Set environment variables only if backend integrations are enabled.
+3. Trigger deployment from `main`.
 
-Replace the remote URL with your repository URL.
+## Contributing
 
-## Deploy to Vercel
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening issues or pull requests.
 
-Import the GitHub repository into Vercel. It detects Next.js automatically; no environment variables are required for this starter.
+## Documentation and community files
 
-## Notes
-
-- The star is procedurally created from a custom curved shape and beveled extrusion. It is a useful editable starting point; a fully domed custom mesh or Blender-made GLB can provide a more organic, inflated sculpture.
-- Chrome needs a reflective environment to look metallic. The project uses the studio environment preset from Drei.
-- Google Fonts is used for DM Sans; the system font stack is the fallback.
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Security Policy](SECURITY.md)
+- [Support](SUPPORT.md)
+- [Changelog](CHANGELOG.md)
+- [License](LICENSE)
