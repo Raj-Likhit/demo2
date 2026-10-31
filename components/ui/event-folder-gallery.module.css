@@ -56,20 +56,24 @@
   left: 0;
   top: -4px;
   z-index: 1;
-  width: 150px;
-  height: 48px;
+  width: max-content;
+  min-width: 150px;
+  max-width: calc(100% - 20px);
+  height: 32px;
   background: var(--paper);
   border: 3.5px solid var(--ink);
   border-bottom: 0;
   border-radius: 20px 36px 0 0 / 22px 28px 0 0;
   display: flex;
-  align-items: center;
-  padding-left: 18px;
-  font-family: 'Kalam', cursive;
+  align-items: flex-start;
+  padding: 3px 18px 9px;
+  font-family: inherit;
   font-size: 16px;
+  line-height: 18px;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 /* Layer 2: Ejectable Photo Prints */
@@ -147,7 +151,7 @@
   padding: 3px 12px;
   font-size: 13px;
   font-weight: 700;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: inherit;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   border-radius: 6px;
@@ -379,7 +383,7 @@
   .event-grid .folder-wrap { max-width:150px; height:150px; }
   .event-grid .folder:focus-visible { outline-offset:5px; border-radius:12px; }
   .event-grid .folder__shadow { inset:14px 0 46px; border-radius:0 12px 12px; transform:translateY(6px) scale(.94); filter:blur(6px); }
-  .event-grid .folder__tab { top:0; width:54%; height:25px; padding:0; border-width:2px; border-radius:10px 14px 0 0; font-size:0; }
+  .event-grid .folder__tab { top:0; width:54%; min-width:0; height:25px; padding:0; border-width:2px; border-radius:10px 14px 0 0; font-size:0; }
   .event-grid .folder__back { inset:14px 0 46px; border-width:2px; border-radius:0 12px 12px; }
   .event-grid .paper { top:24px; left:7px; right:7px; height:63px; padding:3px 3px 7px; border-width:1.5px; border-radius:5px; transform:translate3d(calc(var(--px, 0px) * .3),calc(var(--py, 48px) * .3 - 12px),0) rotate(var(--pr)); box-shadow:none; }
   .event-grid .paper img { border-width:1px; border-radius:2px; }
