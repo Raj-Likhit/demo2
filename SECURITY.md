@@ -10,7 +10,9 @@ Please do **not** open public GitHub issues for security reports.
 
 Instead, report vulnerabilities privately by emailing:
 
-- **contact@devcatalyst.in**
+- [contact@devcatalyst.in](mailto:contact@devcatalyst.in?cc=devcatalyst.2025%40gmail.com)
+
+Please CC **devcatalyst.2025@gmail.com** so the team receives the report. The email link includes this CC automatically.
 
 Include as much detail as possible:
 

@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
   - name: Security vulnerability report
-    url: mailto:contact@devcatalyst.in
-    about: Please report security issues privately via email.
+    url: mailto:contact@devcatalyst.in?cc=devcatalyst.2025%40gmail.com
+    about: Please report security issues privately via email and CC devcatalyst.2025@gmail.com.
   - name: Support and contributor guidance
     url: https://github.com/DevCatalyst-OSS/devcatalyst-website/blob/main/SUPPORT.md
     about: Read support channels and response guidance.

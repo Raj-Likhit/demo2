@@ -68,16 +68,6 @@ npm run lint
 npm run build
 ```
 
-## Local development notes
-
-- Intro animation state is stored in session storage (`devcatalyst-intro-played`).
-- To re-test intro behavior:
-
-```js
-sessionStorage.removeItem("devcatalyst-intro-played");
-location.reload();
-```
-
 ## Deployment
 
 Deploy on Vercel as a standard Next.js app:
@@ -96,4 +86,11 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening issues or pull req
 - [Security Policy](SECURITY.md)
 - [Support](SUPPORT.md)
 - [Changelog](CHANGELOG.md)
-- [License](LICENSE)
+
+## Copyright and licensing
+
+Copyright (c) 2026 DevCatalyst.
+
+DevCatalyst has not selected a project license yet. Licensing terms will be documented once confirmed by the team.
+
+For licensing questions, email [contact@devcatalyst.in](mailto:contact@devcatalyst.in?cc=devcatalyst.2025%40gmail.com) and CC **devcatalyst.2025@gmail.com**.
