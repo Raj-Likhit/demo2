@@ -23,6 +23,7 @@ export default function ClientFeedback() {
     let remainder = 0;
     let hovered = false;
     let touching = false;
+    let activeTouch = false;
     let resumeAt = 0;
     const focused = () => viewport.contains(document.activeElement)
       && document.activeElement?.matches(":focus-visible");
@@ -41,7 +42,7 @@ export default function ClientFeedback() {
     const tick = (time: number) => {
       const elapsed = previousTime ? Math.min(time - previousTime, 50) : 0;
       previousTime = time;
-      if (!preference.matches && !hovered && !touching && !focused() && time >= resumeAt) {
+      if (!preference.matches && !hovered && !touching && !activeTouch && !focused() && time >= resumeAt) {
         // Accumulate fractional pixels so slow motion works in every browser.
         remainder += elapsed * width / 125000;
         const distance = Math.floor(remainder);
@@ -57,6 +58,11 @@ export default function ClientFeedback() {
     const leave = () => { hovered = false; };
     const down = () => { touching = true; };
     const release = () => { touching = false; resumeAt = performance.now() + 1500; };
+    const touchStart = () => { activeTouch = true; };
+    const touchEnd = (event: TouchEvent) => {
+      activeTouch = event.touches.length > 0;
+      if (!activeTouch) resumeAt = performance.now() + 1500;
+    };
     const wheel = () => { resumeAt = performance.now() + 1500; };
     const observer = new ResizeObserver(measure);
     observer.observe(group);
@@ -66,9 +72,12 @@ export default function ClientFeedback() {
     viewport.addEventListener("pointerenter", enter);
     viewport.addEventListener("pointerleave", leave);
     viewport.addEventListener("pointerdown", down);
+    viewport.addEventListener("touchstart", touchStart, { passive: true });
     viewport.addEventListener("wheel", wheel, { passive: true });
     window.addEventListener("pointerup", release);
     window.addEventListener("pointercancel", release);
+    window.addEventListener("touchend", touchEnd, { passive: true });
+    window.addEventListener("touchcancel", touchEnd, { passive: true });
     frame = requestAnimationFrame(tick);
 
     return () => {
@@ -79,9 +88,12 @@ export default function ClientFeedback() {
       viewport.removeEventListener("pointerenter", enter);
       viewport.removeEventListener("pointerleave", leave);
       viewport.removeEventListener("pointerdown", down);
+      viewport.removeEventListener("touchstart", touchStart);
       viewport.removeEventListener("wheel", wheel);
       window.removeEventListener("pointerup", release);
       window.removeEventListener("pointercancel", release);
+      window.removeEventListener("touchend", touchEnd);
+      window.removeEventListener("touchcancel", touchEnd);
     };
   }, []);
 

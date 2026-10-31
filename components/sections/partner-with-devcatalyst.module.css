@@ -1,5 +1,6 @@
 .page { background:var(--dc-paper); color:var(--dc-ink); overflow:clip; }
 .page a:focus-visible, .page summary:focus-visible { outline:2px solid currentColor; outline-offset:6px; }
+.page .lightAction:focus-visible { outline-color:var(--dc-paper); }
 .hero { position:relative; isolation:isolate; min-height:820px; background:var(--dc-ink); color:var(--dc-paper); }
 .heroPhoto { position:absolute; inset:0 0 0 auto; width:58%; overflow:hidden; animation:photo-reveal 1.2s cubic-bezier(.16,1,.3,1) both; }
 .heroPhoto img { object-fit:cover; object-position:52% center; filter:grayscale(1); }
