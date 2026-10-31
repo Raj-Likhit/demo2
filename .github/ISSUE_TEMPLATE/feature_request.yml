@@ -1,0 +1,28 @@
+name: Feature request
+description: Suggest a new feature for the DevCatalyst website
+labels: [feature]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What user problem does this feature solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the feature and expected outcome.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Any alternate approaches you evaluated.
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Links, references, or mockups.
