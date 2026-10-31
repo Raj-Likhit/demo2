@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { emailHref } from "@/lib/contact";
 
 type ArcGalleryHeroProps = {
   images: string[];
@@ -57,7 +58,7 @@ export function ArcGalleryHero({
           <p className="mb-5 text-xs font-semibold uppercase tracking-[0.18em] text-catalyst-forest">Our story</p>
           <h1 className="text-4xl font-semibold tracking-[-0.05em] sm:text-6xl lg:text-7xl">A better way to make things together.</h1>
           <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-catalyst-muted sm:text-lg">DevCatalyst began with a small belief: productive software should make room for the messy, brilliant human work behind every release.</p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row"><Link href="/" className="w-full rounded-full bg-catalyst-forest px-6 py-3 text-sm font-semibold text-white transition hover:bg-catalyst-ink sm:w-auto">Meet the product</Link><a href="mailto:hello@devcatalyst.com" className="w-full rounded-full border border-catalyst-line bg-white px-6 py-3 text-sm font-medium transition hover:bg-catalyst-sage sm:w-auto">Join our journey</a></div>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row"><Link href="/" className="w-full rounded-full bg-catalyst-forest px-6 py-3 text-sm font-semibold text-white transition hover:bg-catalyst-ink sm:w-auto">Meet the product</Link><a href={emailHref()} className="w-full rounded-full border border-catalyst-line bg-white px-6 py-3 text-sm font-medium transition hover:bg-catalyst-sage sm:w-auto">Join our journey</a></div>
         </div>
       </div>
       <style>{`

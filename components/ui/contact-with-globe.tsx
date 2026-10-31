@@ -7,6 +7,7 @@ import { z } from "zod";
 import GlobeWireframe from "@/components/ui/globe-wireframe";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { emailHref } from "@/lib/contact";
 
 const phonePattern = /^\+?[0-9][0-9\s().-]*$/;
 
@@ -116,7 +117,7 @@ export default function ContactWithGlobe({
               </p>
             </div>
             <a
-              href="mailto:contact@devcatalyst.in"
+              href={emailHref()}
               className="group flex min-h-12 w-fit items-center gap-3 rounded-lg text-base font-medium text-catalyst-ink transition-colors hover:text-catalyst-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-catalyst-forest focus-visible:ring-offset-4"
             >
               <span className="grid size-10 place-items-center rounded-lg border border-catalyst-line bg-catalyst-white group-hover:border-catalyst-forest">
@@ -240,7 +241,7 @@ export default function ContactWithGlobe({
             </Button>
             <p className="text-xs leading-5 text-catalyst-muted" role="note">
               This form does not send or store messages yet. For now, email{" "}
-              <a className="font-medium text-catalyst-ink underline underline-offset-2" href="mailto:contact@devcatalyst.in">contact@devcatalyst.in</a>.
+              <a className="font-medium text-catalyst-ink underline underline-offset-2" href={emailHref()}>contact@devcatalyst.in</a>.
             </p>
             {status === "invalid" && (
               <p role="alert" className="text-sm font-medium text-red-700">

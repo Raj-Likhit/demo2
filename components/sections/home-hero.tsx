@@ -3,6 +3,7 @@
 import { ArrowRight, ArrowUpRight, Box, Globe, Lightbulb, Users } from "lucide-react";
 import { gsap } from "gsap";
 import { useLayoutEffect, useRef } from "react";
+import Link from "next/link";
 
 import { CrowdCanvas } from "@/components/ui/skiper39";
 import AnimatedHeroHeadline from "@/components/ui/animated-hero-headline";
@@ -83,24 +84,24 @@ export default function HomeHero() {
             </p>
 
             <div data-hero-actions className="mt-7 flex flex-wrap items-center gap-3">
-              <a
+              <Link
                 id="start"
-                href="https://github.com/DevCatalyst-OSS/"
-                target="_blank"
-                rel="noreferrer noopener"
+                href="/partner-with-devcatalyst"
                 className="group inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-catalyst-forest px-6 py-3 text-sm font-semibold text-white transition duration-200 hover:bg-catalyst-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-catalyst-forest focus-visible:ring-offset-4"
               >
-                Explore projects
+                Partner with us
                 <ArrowRight
                   size={17}
                   className="transition-transform duration-200 group-hover:translate-x-1"
                 />
-              </a>
+              </Link>
               <a
-                href="#contact"
-                className="group inline-flex min-h-12 items-center justify-center gap-3 rounded-full border border-catalyst-forest bg-catalyst-white/90 px-6 py-3 text-sm font-medium text-catalyst-ink transition duration-200 hover:bg-catalyst-sage focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-catalyst-forest focus-visible:ring-offset-4"
+                href="https://socials.devcatalyst.in/"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="group inline-flex min-h-12 items-center justify-center gap-3 rounded-full border border-catalyst-line/80 bg-catalyst-white/60 px-6 py-3 text-sm font-medium text-catalyst-ink shadow-[0_5px_24px_rgba(0,0,0,0.06)] backdrop-blur-xl transition-colors duration-200 hover:bg-catalyst-white/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-catalyst-forest focus-visible:ring-offset-4 motion-reduce:transition-none"
               >
-                Find your people
+                Join the community
                 <ArrowUpRight size={17} strokeWidth={1.8} />
               </a>
             </div>

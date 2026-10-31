@@ -87,13 +87,15 @@ export type Testimonial = {
   eventId: string | null;
   authorImage: string | null;
   companyImage: string | null;
+  companyImageSquare?: boolean;
   portraitScale: number;
   portraitOrigin: string;
   galleryPhotos?: EventPhoto[];
   galleryTitle?: string;
 };
 
-export const testimonials: Testimonial[] = suppliedTestimonials.map((item, index) => ({
+export const testimonials: Testimonial[] = [
+  ...suppliedTestimonials.map((item, index) => ({
   ...item,
   slug: ["bhargavi-freshgradprep", "sai-krishna-centle", "vamshi-team-centle", "srini-rao-beacon", "dr-l-k-indumathi"][index],
   eventId: ["freshgradprep-hired", "summersaas-2026", "summersaas-2026", "beacons", null][index],
@@ -106,7 +108,28 @@ export const testimonials: Testimonial[] = suppliedTestimonials.map((item, index
     return event ? [event.photos[0]] : [];
   }) : undefined,
   galleryTitle: index === 4 ? "Moments from DevCatalyst events" : undefined,
-}));
+  })),
+  {
+    slug: "aws-sbg-team-mecs",
+    organization: "AWS Student Builder Group at MECS",
+    event: "AWS Student Community Day at Matrusri Engineering College",
+    name: "AWS SBG Team",
+    role: "AWS Student Builder Group at MECS",
+    excerpt: "DevCatalyst is a team that doesn't just support events; they take ownership and make things happen!",
+    paragraphs: [
+      "DevCatalyst played a massive role in making our AWS Student Community Day at Matrusri Engineering College a success. Beyond our four active core organizing members, we had 20+ dedicated volunteers from DevCatalyst who took ownership of everything from stage setup and event materials to speaker outreach, confirmations, scheduling, logistics, and on-ground coordination.",
+      "What truly stood out was their commitment and ability to execute. They didn't just volunteer; they worked like an extension of our core organizing team, stepping up whenever needed and handling responsibilities with incredible dedication.",
+      "DevCatalyst is a team that doesn't just support events; they take ownership and make things happen!",
+    ],
+    eventId: "aws-scd",
+    authorImage: null,
+    companyImage: "/testimonials/aws-sbg-team-mecs.jpeg",
+    companyImageSquare: true,
+    portraitScale: 1,
+    portraitOrigin: "center",
+    galleryTitle: "Moments from AWS Student Community Day",
+  },
+];
 
 export function testimonialInitials(name: string) {
   return name.replace(/^Dr\.?\s+/i, "").split(/\s+/).slice(0, 2).map((part) => part[0]).join("");
